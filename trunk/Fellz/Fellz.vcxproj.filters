@@ -19,6 +19,9 @@
     <ClCompile Include="WaitingConnectionScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="MainGameScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -28,6 +31,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="WaitingConnectionScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGameScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -31,8 +31,26 @@ bool WaitingConnectionScene::init()
 		return false;
 	}
 
-	//setup scene
+	// get instance for director
+	CCDirector* director = CCDirector::sharedDirector();
+	CCSize windowSize = director->getWinSize();
 
+	//setup scene
+	
+	//jump button
+	CCMenuItemFont* jumpButton = CCMenuItemFont::create("Jump",this,menu_selector(WaitingConnectionScene::JumpCallback));
+	// put the item on the middle of screen
+	jumpButton->setPosition(windowSize.width/2.0f,windowSize.height/2.0f);
+	// create menu to put button
+	CCMenu* mainMenu = CCMenu::create(jumpButton, NULL);
+	mainMenu->setPosition(CCPointZero);
+	this->addChild(mainMenu);
 
 	return true;
+}
+
+void WaitingConnectionScene::JumpCallback(CCObject* pSender)
+{
+	// calls next scene
+	CCDirector::sharedDirector()->pushScene(MainGameScene::scene());
 }
