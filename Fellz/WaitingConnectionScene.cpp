@@ -1,6 +1,5 @@
 #include "WaitingConnectionScene.h"
 
-
 USING_NS_CC;
 
 
@@ -45,12 +44,12 @@ bool WaitingConnectionScene::init()
 	CCMenu* mainMenu = CCMenu::create(jumpButton, NULL);
 	mainMenu->setPosition(CCPointZero);
 	this->addChild(mainMenu);
-
+	
 	return true;
 }
 
 void WaitingConnectionScene::JumpCallback(CCObject* pSender)
 {
 	// calls next scene
-	CCDirector::sharedDirector()->pushScene(MainGameScene::scene());
+	CCDirector::sharedDirector()->pushScene(CCTransitionProgressOutIn::transitionWithDuration(1.0f,MainGameScene::scene()));
 }
