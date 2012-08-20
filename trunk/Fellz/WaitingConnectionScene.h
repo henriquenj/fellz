@@ -13,6 +13,8 @@ public:
 	// setup scene
 	virtual bool init();
 
+	virtual ~WaitingConnectionScene();
+
 	// act like a constructor
 	static cocos2d::CCScene* scene();
 
