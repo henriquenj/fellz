@@ -22,6 +22,11 @@ CCScene* WaitingConnectionScene::scene()
     return scene;
 }
 
+WaitingConnectionScene::~WaitingConnectionScene()
+{
+	
+}
+
 bool WaitingConnectionScene::init()
 {
 	// super init first of all
@@ -44,6 +49,10 @@ bool WaitingConnectionScene::init()
 	CCMenu* mainMenu = CCMenu::create(jumpButton, NULL);
 	mainMenu->setPosition(CCPointZero);
 	this->addChild(mainMenu);
+
+	//init random seed
+	srand(time(0));
+	
 	
 	return true;
 }
