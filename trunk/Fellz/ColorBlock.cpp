@@ -64,8 +64,12 @@ void ColorBlock::InitInWorld(b2World* world)
 	// add to body
 	body->CreateFixture(&blockFixture);
 
+	// make the blocks goes up
 	body->SetLinearVelocity(b2Vec2(0.0,3.0));
 
+	attached = false;
+	// set tag
+	this->setTag(BLOCK_TAG);
 }
 
 ColorBlock::~ColorBlock(void)
@@ -74,4 +78,16 @@ ColorBlock::~ColorBlock(void)
 	{
 		world->DestroyBody(body);
 	}
+}
+
+void ColorBlock::AttachTo(b2Body* toAttach)
+{
+	// set this flag with true
+	attached = true;
+	
+	// define joint
+	b2DistanceJointDef jointDef;
+	jointDef.Initialize(body,toAttach,b2Vec2(this->getPositionX() / PTM_RATIO,this->getPositionY() / PTM_RATIO),toAttach->GetPosition() );
+	// add to world
+	world->CreateJoint(&jointDef);
 }

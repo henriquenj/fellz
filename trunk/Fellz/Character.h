@@ -1,6 +1,9 @@
 #ifndef __CHARACTER_CLASS__
 #define __CHARACTER_CLASS__
 
+
+#define CHARACTER_TAG 99 // to be used in the processing of collisions
+
 #include "cocos2d.h"
 #include "Box2D\Box2D.h"
 
@@ -14,6 +17,10 @@ public:
 	Character(cocos2d::CCLayer* layer, b2World* world);
 	~Character(void);
 	void Update(float dt);
+	inline b2Body* GetBody()const
+	{
+		return characterBody;
+	}
 
 private:
 	cocos2d::CCLayer* layer;

@@ -40,6 +40,7 @@ private:
 	// pointer to Box2D world
 	// hold all related Box2D stuff
 	b2World* box2DWorld;
+
 };
 
 

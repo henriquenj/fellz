@@ -8,6 +8,7 @@
 // pixels per meter
 #define PTM_RATIO 32
 
+#define BLOCK_TAG 999
 //Color block class hold references to Box2D bodys, its a CCSprite with Box2D
 class ColorBlock : public cocos2d::CCSprite
 {
@@ -20,11 +21,25 @@ public:
 	void InitInWorld(b2World* world);
 	virtual ~ColorBlock(void);
 
+	// Attach the block to a body (probably the character)
+	void AttachTo(b2Body* toAttach);
+
+	inline b2Body* GetBody()const
+	{
+		return body;
+	}
+	inline bool GetAttached()const
+	{
+		return attached;
+	}
+
 private:
 	// body
 	b2Body* body;
 	//world reference
 	b2World* world;
+	// bool that controls if the block id attached to the main character
+	bool attached;
 };
 
 

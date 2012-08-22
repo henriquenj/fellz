@@ -37,12 +37,12 @@ bool MainGameScene::init()
 	// put the update method to work
 	this->scheduleUpdate();
 
-	this->schedule(schedule_selector(MainGameScene::CreateBlockCallback),1.0f);
+	this->schedule(schedule_selector(MainGameScene::CreateBlockCallback),0.1f);
 
 
 	// create Box2D stuff
 	// init world
-	box2DWorld = new b2World(b2Vec2(0.0f,0.0f)); // this gravity will make the objects go up
+	box2DWorld = new b2World(b2Vec2(0.0f,0.0f));
 
 	// create character
 	mainCharacter = new Character(this,box2DWorld);
@@ -53,10 +53,12 @@ bool MainGameScene::init()
 void MainGameScene::update(float dt)
 {
 	// update game scene
-	mainCharacter->Update(dt);
 
 	// update physics engine
 	box2DWorld->Step(dt,10,10);
+
+	//update character
+	mainCharacter->Update(dt);
 
 	// update blocks
 	//iterate through the list
@@ -73,6 +75,25 @@ void MainGameScene::update(float dt)
 			if(amountToDelete < 5)
 			{
 				amountToDelete++;
+			}
+		}
+		else
+		{
+			// dont process if the block is already connected with the character
+			if (!(*it)->GetAttached())
+			{
+				// process colision detection
+				b2ContactEdge* edge = (*it)->GetBody()->GetContactList();
+				if (edge != NULL) // if == null, no collision
+				{
+					// if collided with character, don't delete
+					if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG ||
+						((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG)
+					{
+						// the block collided with character
+						(*it)->AttachTo(mainCharacter->GetBody());
+					}
+				}
 			}
 		}
 	}

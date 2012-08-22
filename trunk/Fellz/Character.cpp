@@ -11,6 +11,7 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 	// load asset and put in the right spot
 	sprite = CCSprite::create("Assets/meat_boy_by_barakaldo-d3apehs.png");
 	sprite->setPosition(ccp(400.0f,500.0f));
+	sprite->setTag(CHARACTER_TAG);
 	layer->addChild(sprite);
 
 
@@ -22,7 +23,7 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 	// divide by the PTM ratio
 	blockDef.position.Set(sprite->getPositionX() / PTM_RATIO, sprite->getPositionY() / PTM_RATIO);
 	// define that this CCSprite is linked with this body
-	blockDef.userData = this;
+	blockDef.userData = sprite;
 	// creates body with this descriptors
 	characterBody = world->CreateBody(&blockDef);
 
