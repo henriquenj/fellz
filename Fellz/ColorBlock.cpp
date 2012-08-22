@@ -64,7 +64,7 @@ void ColorBlock::InitInWorld(b2World* world)
 	// add to body
 	body->CreateFixture(&blockFixture);
 
-	body->SetLinearVelocity(b2Vec2(0.0,5.0));
+	body->SetLinearVelocity(b2Vec2(0.0,3.0));
 
 }
 

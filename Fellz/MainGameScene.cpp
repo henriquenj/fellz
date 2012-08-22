@@ -67,7 +67,7 @@ void MainGameScene::update(float dt)
 	for (it = blocksList.begin(); it != blocksList.end(); it++)
 	{
 		// check if it's time to kill the block
-		if ((*it)->getPositionY() > 650.0f)
+		if ((*it)->getPositionY() > 650.0f || (*it)->getPositionY() < -85.0f)
 		{
 			toDelete[amountToDelete] = it;
 			if(amountToDelete < 5)
