@@ -33,20 +33,19 @@ bool MainGameScene::init()
 	{
 		return false;
 	}
-	// load asset and put in the right spot
-	mainCharacter = CCSprite::create("Assets/meat_boy_by_barakaldo-d3apehs.png");
-	mainCharacter->setPosition(ccp(400.0f,500.0f));
-	this->addChild(mainCharacter);
 
 	// put the update method to work
 	this->scheduleUpdate();
 
-	this->schedule(schedule_selector(MainGameScene::CreateBlockCallback),0.1f);
+	this->schedule(schedule_selector(MainGameScene::CreateBlockCallback),1.0f);
 
 
 	// create Box2D stuff
 	// init world
-	box2DWorld = new b2World(b2Vec2(0.0f,30.0f)); // this gravity will make the objects go up
+	box2DWorld = new b2World(b2Vec2(0.0f,0.0f)); // this gravity will make the objects go up
+
+	// create character
+	mainCharacter = new Character(this,box2DWorld);
 	
 	return true;
 }
@@ -54,31 +53,12 @@ bool MainGameScene::init()
 void MainGameScene::update(float dt)
 {
 	// update game scene
+	mainCharacter->Update(dt);
 
-	if(KeyboardInput::GetKey(CC_KEY_UP))
-	{
-		// go up
-		mainCharacter->setPosition(ccp(mainCharacter->getPositionX(),mainCharacter->getPositionY() + dt * 100.0f));
-	}
-	if (KeyboardInput::GetKey(CC_KEY_DOWN))
-	{
-		// go down
-		mainCharacter->setPosition(ccp(mainCharacter->getPositionX(),mainCharacter->getPositionY() - dt * 100.0f));
-	}
-	if (KeyboardInput::GetKey(CC_KEY_LEFT))
-	{
-		//go left
-		mainCharacter->setPosition(ccp(mainCharacter->getPositionX() - dt * 100.0f,mainCharacter->getPositionY()));
-	}
-	if (KeyboardInput::GetKey(CC_KEY_RIGHT))
-	{
-		// go right
-		mainCharacter->setPosition(ccp(mainCharacter->getPositionX() + dt * 100.0f,mainCharacter->getPositionY()));
-	}
+	// update physics engine
+	box2DWorld->Step(dt,10,10);
 
-	// update blocks, make them go up
-
-	
+	// update blocks
 	//iterate through the list
 	std::list<ColorBlock*>::iterator it;
 	//lets just pretend that no more than 5 blocks will be deleted in the same frame
@@ -86,7 +66,6 @@ void MainGameScene::update(float dt)
 	int amountToDelete = 0;
 	for (it = blocksList.begin(); it != blocksList.end(); it++)
 	{
-		(*it)->setPositionY((*it)->getPositionY() + dt * 100.0f);
 		// check if it's time to kill the block
 		if ((*it)->getPositionY() > 650.0f)
 		{
@@ -106,6 +85,8 @@ void MainGameScene::update(float dt)
 		// remove from local list
 		blocksList.erase(toDelete[i]);
 	}
+
+
 	
 }
 
@@ -123,7 +104,7 @@ void MainGameScene::CreateBlockCallback(float time)
 	// add as a child to this layer
 	this->addChild(newBlock);
 
-	newBlock->SetWorld(box2DWorld);
+	newBlock->InitInWorld(box2DWorld);
 
 	// add to local list
 	blocksList.push_back(newBlock);

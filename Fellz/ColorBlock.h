@@ -14,8 +14,10 @@ class ColorBlock : public cocos2d::CCSprite
 public:
 	ColorBlock();
 	static ColorBlock* create(const char * file);
-	// set world reference, only then the bodys are created
-	void SetWorld(b2World* world);
+	// update callback, called every frame
+	void update(float dt);
+	// set world reference and init block
+	void InitInWorld(b2World* world);
 	virtual ~ColorBlock(void);
 
 private:

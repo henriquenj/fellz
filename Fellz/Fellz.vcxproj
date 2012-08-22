@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppDelegate.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="ColorBlock.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppDelegate.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="ColorBlock.h" />
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Main.h" />
