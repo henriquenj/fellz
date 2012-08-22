@@ -21,8 +21,19 @@ ColorBlock* ColorBlock::create(const char * file)
     CC_SAFE_DELETE(pobSprite);
     return NULL;
 }
-void ColorBlock::SetWorld(b2World* world)
+
+void ColorBlock::update(float dt)
 {
+	// update sprite's position based on body from Box2D
+	this->setPosition(ccp(body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO));
+	this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+}
+void ColorBlock::InitInWorld(b2World* world)
+{
+
+	// put the update method to work;
+	this->scheduleUpdate();
+
 	// hold reference
 	this->world = world;
 
@@ -41,7 +52,7 @@ void ColorBlock::SetWorld(b2World* world)
 	// now comes the shape
 	b2PolygonShape blockShape;
 	// create shape based on the size of the sprite
-	blockShape.SetAsBox(this->boundingBox().size.width / PTM_RATIO,this->boundingBox().size.height / PTM_RATIO);
+	blockShape.SetAsBox((this->boundingBox().size.width / PTM_RATIO)/2,(this->boundingBox().size.height / PTM_RATIO)/2);
 
 	// connect shape with body
 	b2FixtureDef blockFixture;
@@ -52,6 +63,8 @@ void ColorBlock::SetWorld(b2World* world)
 
 	// add to body
 	body->CreateFixture(&blockFixture);
+
+	body->SetLinearVelocity(b2Vec2(0.0,5.0));
 
 }
 

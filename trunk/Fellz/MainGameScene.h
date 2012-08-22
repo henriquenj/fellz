@@ -9,6 +9,7 @@
 #include "Box2D/Box2D.h"
 #include "KeyboardInput.h"
 #include "ColorBlock.h"
+#include "Character.h"
 
 class MainGameScene : public cocos2d::CCLayer
 {
@@ -33,7 +34,7 @@ public:
 	
 private:
 	// represents the main character
-	cocos2d::CCSprite* mainCharacter;
+	Character* mainCharacter;
 	// list that hold points to all blocks
 	std::list<ColorBlock*> blocksList;
 	// pointer to Box2D world
