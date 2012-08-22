@@ -21,7 +21,10 @@ CCScene* MainGameScene::scene()
 
 MainGameScene::~MainGameScene()
 {
-
+	// delete the other bodies before deleting world
+	this->removeAllChildrenWithCleanup(true);
+	// delete Box2D world
+	delete box2DWorld;
 }
 
 bool MainGameScene::init()
@@ -39,6 +42,11 @@ bool MainGameScene::init()
 	this->scheduleUpdate();
 
 	this->schedule(schedule_selector(MainGameScene::CreateBlockCallback),0.1f);
+
+
+	// create Box2D stuff
+	// init world
+	box2DWorld = new b2World(b2Vec2(0.0f,30.0f)); // this gravity will make the objects go up
 	
 	return true;
 }
@@ -72,9 +80,9 @@ void MainGameScene::update(float dt)
 
 	
 	//iterate through the list
-	std::list<CCSprite*>::iterator it;
+	std::list<ColorBlock*>::iterator it;
 	//lets just pretend that no more than 5 blocks will be deleted in the same frame
-	std::list<CCSprite*>::iterator toDelete[5];
+	std::list<ColorBlock*>::iterator toDelete[5];
 	int amountToDelete = 0;
 	for (it = blocksList.begin(); it != blocksList.end(); it++)
 	{
@@ -105,7 +113,7 @@ void MainGameScene::CreateBlockCallback(float time)
 {
 
 	// create block on a random location
-	CCSprite* newBlock = CCSprite::create("Assets/red_block.png");
+	ColorBlock* newBlock = ColorBlock::create("Assets/red_block.png");
 
 	// randomize position
 	newBlock->setPositionX(rand() % 800);
@@ -114,6 +122,8 @@ void MainGameScene::CreateBlockCallback(float time)
 
 	// add as a child to this layer
 	this->addChild(newBlock);
+
+	newBlock->SetWorld(box2DWorld);
 
 	// add to local list
 	blocksList.push_back(newBlock);
