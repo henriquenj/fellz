@@ -25,6 +25,9 @@
     <ClCompile Include="KeyboardInput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColorBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -40,6 +43,9 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="KeyboardInput.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorBlock.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
