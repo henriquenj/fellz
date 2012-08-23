@@ -21,6 +21,8 @@ CCScene* MainGameScene::scene()
 
 MainGameScene::~MainGameScene()
 {
+	// delete character
+	delete mainCharacter;
 	// delete the other bodies before deleting world
 	this->removeAllChildrenWithCleanup(true);
 	// delete Box2D world
