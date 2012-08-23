@@ -40,6 +40,7 @@ private:
 	b2World* world;
 	// bool that controls if the block id attached to the main character
 	bool attached;
+	b2Body* attachedBody; // pointer to attached body
 };
 
 
