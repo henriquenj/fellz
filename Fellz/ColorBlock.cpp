@@ -6,6 +6,7 @@ ColorBlock::ColorBlock()
 {
 	body = NULL;
 	world = NULL;
+	attachedBody = NULL;
 }
 
 ColorBlock* ColorBlock::create(const char * file)
@@ -27,6 +28,7 @@ void ColorBlock::update(float dt)
 	// update sprite's position based on body from Box2D
 	this->setPosition(ccp(body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO));
 	this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+
 }
 void ColorBlock::InitInWorld(b2World* world)
 {
@@ -42,6 +44,7 @@ void ColorBlock::InitInWorld(b2World* world)
 	// descriptor
 	b2BodyDef blockDef;
 	blockDef.type = b2_dynamicBody;
+	blockDef.allowSleep = false;
 	// divide by the PTM ratio
 	blockDef.position.Set(this->getPositionX() / PTM_RATIO, this->getPositionY() / PTM_RATIO);
 	// define that this CCSprite is linked with this body
@@ -84,10 +87,26 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 {
 	// set this flag with true
 	attached = true;
-	
+	// copy reference
+	attachedBody = toAttach;
+
+	//// define joint
+	//b2DistanceJointDef jointDef;
+	//jointDef.Initialize(body,toAttach,b2Vec2(this->getPositionX() / PTM_RATIO,this->getPositionY() / PTM_RATIO),toAttach->GetPosition() );
+	//// add to world
+	//world->CreateJoint(&jointDef);
+
+
+	b2Vec2 worldCoordsAnchorPoint = body->GetWorldPoint(b2Vec2(0.6f,0));
 	// define joint
-	b2DistanceJointDef jointDef;
-	jointDef.Initialize(body,toAttach,b2Vec2(this->getPositionX() / PTM_RATIO,this->getPositionY() / PTM_RATIO),toAttach->GetPosition() );
+	b2WeldJointDef jointDef;
+	jointDef.bodyA = toAttach;
+	jointDef.bodyB = body;
+	jointDef.localAnchorB = body->GetLocalPoint(worldCoordsAnchorPoint);
+	jointDef.localAnchorA = toAttach->GetLocalPoint(worldCoordsAnchorPoint);
+	jointDef.referenceAngle = body->GetAngle() - toAttach->GetAngle();
 	// add to world
 	world->CreateJoint(&jointDef);
+
+	
 }

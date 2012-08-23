@@ -37,7 +37,7 @@ bool MainGameScene::init()
 	// put the update method to work
 	this->scheduleUpdate();
 
-	this->schedule(schedule_selector(MainGameScene::CreateBlockCallback),0.1f);
+	this->schedule(schedule_selector(MainGameScene::CreateBlockCallback),0.5f);
 
 
 	// create Box2D stuff
@@ -53,12 +53,11 @@ bool MainGameScene::init()
 void MainGameScene::update(float dt)
 {
 	// update game scene
-
-	// update physics engine
-	box2DWorld->Step(dt,10,10);
-
+	
 	//update character
 	mainCharacter->Update(dt);
+	// update physics engine
+	box2DWorld->Step(dt,10,10);
 
 	// update blocks
 	//iterate through the list
@@ -107,8 +106,6 @@ void MainGameScene::update(float dt)
 		blocksList.erase(toDelete[i]);
 	}
 
-
-	
 }
 
 void MainGameScene::CreateBlockCallback(float time)
