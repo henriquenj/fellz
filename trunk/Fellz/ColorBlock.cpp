@@ -90,12 +90,6 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 	// copy reference
 	attachedBody = toAttach;
 
-	//// define joint
-	//b2DistanceJointDef jointDef;
-	//jointDef.Initialize(body,toAttach,b2Vec2(this->getPositionX() / PTM_RATIO,this->getPositionY() / PTM_RATIO),toAttach->GetPosition() );
-	//// add to world
-	//world->CreateJoint(&jointDef);
-
 
 	b2Vec2 worldCoordsAnchorPoint = body->GetWorldPoint(b2Vec2(0.6f,0));
 	// define joint
