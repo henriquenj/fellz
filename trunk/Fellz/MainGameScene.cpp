@@ -85,15 +85,37 @@ void MainGameScene::update(float dt)
 			{
 				// process colision detection
 				b2ContactEdge* edge = (*it)->GetBody()->GetContactList();
-				if (edge != NULL) // if == null, no collision
+				while (edge != NULL) // if == null, no more collisions
 				{
-					// if collided with character, don't delete
-					if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG ||
-						((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG)
+					if (edge->contact->IsTouching())
 					{
-						// the block collided with character
-						(*it)->AttachTo(mainCharacter->GetBody());
+						// iterate through the list of contacts
+						// if collided with character, don't delete
+						if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG ||
+							((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG)
+						{
+							// the block collided with character
+							(*it)->AttachTo(mainCharacter->GetBody());
+						}
+						// check if it's a attached block, so attached to this one
+						else if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == BLOCK_TAG ||
+							((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == BLOCK_TAG)
+						{
+							// check which one is the IT
+							// attached based on this
+							if (edge->contact->GetFixtureA()->GetBody() == (*it)->GetBody())
+							{
+								// attach on B fixture
+								(*it)->AttachTo(edge->contact->GetFixtureB()->GetBody());
+							}
+							else
+							{
+								// attach on A fixture
+								(*it)->AttachTo(edge->contact->GetFixtureA()->GetBody());
+							}
+						}
 					}
+					edge = edge->next; // go to the next colision
 				}
 			}
 		}
