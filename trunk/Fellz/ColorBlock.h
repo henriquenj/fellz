@@ -26,6 +26,8 @@ public:
 	// set world reference and init block
 	void InitInWorld(b2World* world);
 	virtual ~ColorBlock(void);
+	// to be used to destroy a block when there's two or more of the same kind nearby
+	void Destroy();
 
 	// Attach the block to a body (probably the character)
 	void AttachTo(b2Body* toAttach);
@@ -38,9 +40,13 @@ public:
 	{
 		return attached;
 	}
-	inline short GetCubeColor()const
+	inline short GetBlockColor()const
 	{
 		return cubeColor;
+	}
+	inline bool GetDying()const
+	{
+		return this->isDying;
 	}
 
 private:
@@ -51,9 +57,10 @@ private:
 	// bool that controls if the block id attached to the main character
 	bool attached;
 	b2Body* attachedBody; // pointer to attached body
-
 	// stores cube color, could varies from 0 to 2
 	short cubeColor;
+	// bool that stores if a block is dying
+	bool isDying;
 };
 
 

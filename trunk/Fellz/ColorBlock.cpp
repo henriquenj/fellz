@@ -10,6 +10,8 @@ ColorBlock::ColorBlock()
 
 	// generates a random number that'll define the cube color
 	cubeColor = rand() % 3;
+
+	isDying = false;
 }
 
 ColorBlock* ColorBlock::create(const char * file)
@@ -31,7 +33,6 @@ void ColorBlock::update(float dt)
 	// update sprite's position based on body from Box2D
 	this->setPosition(ccp(body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO));
 	this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
-
 }
 void ColorBlock::InitInWorld(b2World* world)
 {
@@ -103,6 +104,14 @@ ColorBlock::~ColorBlock(void)
 	{
 		world->DestroyBody(body);
 	}
+}
+
+void ColorBlock::Destroy()
+{
+	isDying = true;
+	// put a fade in the block, will last 0.5 seconds
+	CCFadeOut* fade = CCFadeOut::actionWithDuration(0.5f);
+	this->runAction(fade);
 }
 
 void ColorBlock::AttachTo(b2Body* toAttach)
