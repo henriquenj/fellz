@@ -136,7 +136,7 @@ void MainGameScene::CreateBlockCallback(float time)
 {
 
 	// create block on a random location
-	ColorBlock* newBlock = ColorBlock::create("Assets/red_block.png");
+	ColorBlock* newBlock = ColorBlock::create("Assets/block.png");
 
 	// randomize position
 	newBlock->setPositionX(rand() % 800);
