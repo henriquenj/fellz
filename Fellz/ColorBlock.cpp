@@ -91,7 +91,7 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 	attachedBody = toAttach;
 
 
-	b2Vec2 worldCoordsAnchorPoint = body->GetWorldPoint(b2Vec2(0.6f,0));
+	b2Vec2 worldCoordsAnchorPoint = body->GetWorldPoint(b2Vec2(0.5f,0));
 	// define joint
 	b2WeldJointDef jointDef;
 	jointDef.bodyA = toAttach;
