@@ -65,57 +65,95 @@ void MainGameScene::update(float dt)
 	//iterate through the list
 	std::list<ColorBlock*>::iterator it;
 	//lets just pretend that no more than 5 blocks will be deleted in the same frame
+
 	std::list<ColorBlock*>::iterator toDelete[5];
 	int amountToDelete = 0;
 	for (it = blocksList.begin(); it != blocksList.end(); it++)
 	{
-		// check if it's time to kill the block
-		if ((*it)->getPositionY() > 650.0f || (*it)->getPositionY() < -85.0f)
+		// only process if the block isn't dying
+		if (!(*it)->GetDying())
 		{
-			toDelete[amountToDelete] = it;
-			if(amountToDelete < 5)
+			// check if it's time to kill the block
+			if ((*it)->getPositionY() > 650.0f || (*it)->getPositionY() < -85.0f)
 			{
-				amountToDelete++;
+				toDelete[amountToDelete] = it;
+				if(amountToDelete < 5)
+				{
+					amountToDelete++;
+				}
+			}
+			else
+			{
+				// dont process if the block is already connected with the character
+				if (!(*it)->GetAttached())
+				{
+					// process colision detection
+					b2ContactEdge* edge = (*it)->GetBody()->GetContactList();
+					while (edge != NULL) // if == null, no more collisions
+					{
+						if (edge->contact->IsTouching())
+						{
+							// iterate through the list of contacts
+							// if collided with character, don't delete
+							if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG ||
+								((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG)
+							{
+								// the block collided with character
+								(*it)->AttachTo(mainCharacter->GetBody());
+							}
+							// check if it's a attached block, so attached to this one
+							else if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == BLOCK_TAG ||
+								((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == BLOCK_TAG)
+							{
+								// check which one is the IT
+								// attached based on this
+								if (edge->contact->GetFixtureA()->GetBody() == (*it)->GetBody())
+								{
+									// attach on B fixture
+									(*it)->AttachTo(edge->contact->GetFixtureB()->GetBody());
+								}
+								else
+								{
+									// attach on A fixture
+									(*it)->AttachTo(edge->contact->GetFixtureA()->GetBody());
+								}
+							}
+						}
+						edge = edge->next; // go to the next colision
+					}
+				}
+				// now process those which are already attached to the character body
+				else
+				{
+					//// only check for three identical pieces for now
+					//short identicalPieces = 0; // counter
+					//ColorBlock* contiguousBlocks[3]; // pointer to the three contiguous blocks
+					//b2ContactEdge* edge = (*it)->GetBody()->GetContactList();
+					//short blockColor = (*it)->GetBlockColor(); // algorithm should look for this block color
+					//
+					//while (edge != NULL || identicalPieces == 3)
+					//{
+					//	if(((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() != CHARACTER_TAG || 
+					//		((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() != CHARACTER_TAG)
+					//	{
+					//		// we are computing collision between blocks
+					//		if (edge->contact->)
+					//	}
+
+					//	edge = edge->next;
+					//}
+				}
 			}
 		}
 		else
 		{
-			// dont process if the block is already connected with the character
-			if (!(*it)->GetAttached())
+			// check if it's time to be deleted
+			if((*it)->getOpacity() == 0)
 			{
-				// process colision detection
-				b2ContactEdge* edge = (*it)->GetBody()->GetContactList();
-				while (edge != NULL) // if == null, no more collisions
+				toDelete[amountToDelete] = it;
+				if(amountToDelete < 5)
 				{
-					if (edge->contact->IsTouching())
-					{
-						// iterate through the list of contacts
-						// if collided with character, don't delete
-						if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG ||
-							((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == CHARACTER_TAG)
-						{
-							// the block collided with character
-							(*it)->AttachTo(mainCharacter->GetBody());
-						}
-						// check if it's a attached block, so attached to this one
-						else if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == BLOCK_TAG ||
-							((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == BLOCK_TAG)
-						{
-							// check which one is the IT
-							// attached based on this
-							if (edge->contact->GetFixtureA()->GetBody() == (*it)->GetBody())
-							{
-								// attach on B fixture
-								(*it)->AttachTo(edge->contact->GetFixtureB()->GetBody());
-							}
-							else
-							{
-								// attach on A fixture
-								(*it)->AttachTo(edge->contact->GetFixtureA()->GetBody());
-							}
-						}
-					}
-					edge = edge->next; // go to the next colision
+					amountToDelete++;
 				}
 			}
 		}
