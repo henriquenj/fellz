@@ -8,6 +8,12 @@
 // pixels per meter
 #define PTM_RATIO 32
 
+// color defines
+#define BLOCK_RED 0
+#define BLOCK_BLUE 1
+#define BLOCK_GREEN 2
+
+
 #define BLOCK_TAG 999
 //Color block class hold references to Box2D bodys, its a CCSprite with Box2D
 class ColorBlock : public cocos2d::CCSprite
@@ -32,6 +38,10 @@ public:
 	{
 		return attached;
 	}
+	inline short GetCubeColor()const
+	{
+		return cubeColor;
+	}
 
 private:
 	// body
@@ -41,6 +51,9 @@ private:
 	// bool that controls if the block id attached to the main character
 	bool attached;
 	b2Body* attachedBody; // pointer to attached body
+
+	// stores cube color, could varies from 0 to 2
+	short cubeColor;
 };
 
 

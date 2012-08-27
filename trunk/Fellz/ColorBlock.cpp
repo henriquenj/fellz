@@ -1,12 +1,15 @@
 #include "ColorBlock.h"
 
-
+USING_NS_CC;
 
 ColorBlock::ColorBlock()
 {
 	body = NULL;
 	world = NULL;
 	attachedBody = NULL;
+
+	// generates a random number that'll define the cube color
+	cubeColor = rand() % 3;
 }
 
 ColorBlock* ColorBlock::create(const char * file)
@@ -70,9 +73,28 @@ void ColorBlock::InitInWorld(b2World* world)
 	// make the blocks goes up
 	body->SetLinearVelocity(b2Vec2(0.0,3.0));
 
+	// all blocks are initialized detached
 	attached = false;
+
 	// set tag
 	this->setTag(BLOCK_TAG);
+
+	// define color based on random number
+	switch (cubeColor)
+	{
+	case BLOCK_BLUE:
+		// blue color
+		this->setColor(ccc3(0,0,255));
+		break;
+	case BLOCK_GREEN:
+		// green color
+		this->setColor(ccc3(0,255,0));
+		break;
+	case BLOCK_RED:
+		// green color
+		this->setColor(ccc3(255,0,0));
+		break;
+	}
 }
 
 ColorBlock::~ColorBlock(void)
