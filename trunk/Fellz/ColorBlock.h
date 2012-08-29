@@ -69,6 +69,8 @@ private:
 	bool isDying;
 	// hold list of pointers to the blocks that are about to be deleted
 	static std::list<ColorBlock*> blocksToBeDeleted;
+	// hols list pointers to the blocks that are attached to this block
+	std::list<ColorBlock*> attachedBlocks;
 };
 
 
