@@ -125,23 +125,7 @@ void MainGameScene::update(float dt)
 				// now process those which are already attached to the character body
 				else
 				{
-					//// only check for three identical pieces for now
-					//short identicalPieces = 0; // counter
-					//ColorBlock* contiguousBlocks[3]; // pointer to the three contiguous blocks
-					//b2ContactEdge* edge = (*it)->GetBody()->GetContactList();
-					//short blockColor = (*it)->GetBlockColor(); // algorithm should look for this block color
-					//
-					//while (edge != NULL || identicalPieces == 3)
-					//{
-					//	if(((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() != CHARACTER_TAG || 
-					//		((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() != CHARACTER_TAG)
-					//	{
-					//		// we are computing collision between blocks
-					//		if (edge->contact->)
-					//	}
-
-					//	edge = edge->next;
-					//}
+					(*it)->BuildConnections(NULL, -1);
 				}
 			}
 		}

@@ -2,14 +2,16 @@
 
 USING_NS_CC;
 
+std::list<ColorBlock*> ColorBlock::blocksToBeDeleted;
+
 ColorBlock::ColorBlock()
 {
 	body = NULL;
 	world = NULL;
-	attachedBody = NULL;
 
 	// generates a random number that'll define the cube color
-	cubeColor = rand() % 3;
+	//cubeColor = rand() % 3;
+	cubeColor = 0;
 
 	isDying = false;
 }
@@ -118,8 +120,6 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 {
 	// set this flag with true
 	attached = true;
-	// copy reference
-	attachedBody = toAttach;
 
 
 	b2Vec2 worldCoordsAnchorPoint = body->GetWorldPoint(b2Vec2(0.5f,0));
@@ -133,5 +133,126 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 	// add to world
 	world->CreateJoint(&jointDef);
 
+	
+}
+
+void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
+{
+	int colorBlock_s;
+	b2ContactEdge* edge = body->GetContactList();
+	// must find at least three adjacents blocks attacheds to this one
+	// first check if it's the Scene that it's calling
+	if (caller == NULL)
+	{
+		// check which type of block we need to search
+		colorBlock_s = cubeColor;
+		while(edge != NULL)
+		{
+			// must first check if the block are dying
+			if (!((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetDying() &&
+				!((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetDying())
+			{
+				// hold the two first objects in the first iteration
+				// I need to know which fixture holds the current block and which holds the adjacent block
+				if (edge->contact->GetFixtureA()->GetBody() == body)
+				{
+					if(((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == BLOCK_TAG)
+					{
+						if (((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetBlockColor() == colorBlock_s)
+						{
+							// ok, there's a adjacent block, must store reference to it and call build connections on them
+							// add both objects on the list do be destroyed
+							blocksToBeDeleted.push_back(this);
+							blocksToBeDeleted.push_back((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData());
+							// build connections on the next
+							((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->BuildConnections(this,colorBlock_s);
+						}
+					}
+				}
+				else
+				{
+					// same thing here but with different fixtures
+					// make sure it's a block
+					if(((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == BLOCK_TAG)
+					{
+						if (((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetBlockColor() == colorBlock_s)
+						{
+							// ok, there's a adjacent block, must store reference to it and call build connections on them
+							// add both objects on the list do be destroyed
+							blocksToBeDeleted.push_back(this);
+							blocksToBeDeleted.push_back((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData());
+							// build connections on the next
+							((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->BuildConnections(this,colorBlock_s);
+						}
+					}
+				}
+			}
+			edge = edge->next;
+		}
+		// after all function returns, see if there's enough blocks to create a block anihilation
+		if (blocksToBeDeleted.size() > 2)
+		{
+			// iterate through blocks calling destroy
+			std::list<ColorBlock*>::iterator it;
+			for (it = blocksToBeDeleted.begin(); it != blocksToBeDeleted.end(); it++)
+			{
+				(*it)->Destroy();
+			}
+		}
+		//...anyway, erase all content of the list
+		blocksToBeDeleted.clear();
+	}
+	// now process the case when the funcion is called by the other blocks
+	else
+	{
+		colorBlock_s = blockType;
+		while (edge != NULL)
+		{
+			// must first check if the block are dying
+			if (!((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetDying() &&
+				!((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetDying())
+			{
+				// rule out case when we're processing the collision betwen this block and the caller
+				if (edge->contact->GetFixtureA()->GetBody()->GetUserData() != caller && 
+					edge->contact->GetFixtureB()->GetBody()->GetUserData() != caller)
+				{
+					// I need to know which fixture holds the current block and which holds the adjacent block
+					if (edge->contact->GetFixtureA()->GetBody() == body)
+					{
+						// make sure it's a block
+						if(((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == BLOCK_TAG)
+						{
+							if (((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetBlockColor() == colorBlock_s)
+							{
+								// ok, there's a adjacent block, must store reference to it and call build connections on it
+								blocksToBeDeleted.push_back((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData());
+								// build connections on the next
+								((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->BuildConnections(this,colorBlock_s);
+							}
+						}
+					}
+					else
+					{
+						// make sure it's a block
+						if(((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == BLOCK_TAG)
+						{
+							if (((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetBlockColor() == colorBlock_s)
+							{
+								// ok, there's a adjacent block, must store reference to it and call build connections on it
+								blocksToBeDeleted.push_back((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData());
+								// build connections on the next
+								((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->BuildConnections(this,colorBlock_s);
+							}
+						}
+					}
+				}
+			}
+			edge = edge->next;
+		}
+	}
+}
+
+void ColorBlock::Detach()
+{
 	
 }

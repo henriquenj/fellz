@@ -1,6 +1,7 @@
 #ifndef __COLOR_BLOCK_CLASS__
 #define __COLOR_BLOCK_CLASS__
 
+#include <list>
 
 #include "cocos2d.h"
 #include "Box2D\Box2D.h"
@@ -31,6 +32,12 @@ public:
 
 	// Attach the block to a body (probably the character)
 	void AttachTo(b2Body* toAttach);
+	// detach attached blocks, will recursively detach attached blocks
+	void Detach();
+
+	// this function is in some way recursive because calls itself in the adjacent blocks, build the blocksToBeDeleted list
+	// receives the type of block that'll be searched for
+	void BuildConnections(const ColorBlock* caller,const int blockType);
 
 	inline b2Body* GetBody()const
 	{
@@ -56,11 +63,12 @@ private:
 	b2World* world;
 	// bool that controls if the block id attached to the main character
 	bool attached;
-	b2Body* attachedBody; // pointer to attached body
 	// stores cube color, could varies from 0 to 2
 	short cubeColor;
 	// bool that stores if a block is dying
 	bool isDying;
+	// hold list of pointers to the blocks that are about to be deleted
+	static std::list<ColorBlock*> blocksToBeDeleted;
 };
 
 
