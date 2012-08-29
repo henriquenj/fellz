@@ -102,20 +102,29 @@ void MainGameScene::update(float dt)
 								(*it)->AttachTo(mainCharacter->GetBody());
 							}
 							// check if it's a attached block, so attached to this one
-							else if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == BLOCK_TAG ||
+							else if (((CCSprite*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->getTag() == BLOCK_TAG && 
 								((CCSprite*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->getTag() == BLOCK_TAG)
 							{
 								// check which one is the IT
 								// attached based on this
 								if (edge->contact->GetFixtureA()->GetBody() == (*it)->GetBody())
 								{
-									// attach on B fixture
-									(*it)->AttachTo(edge->contact->GetFixtureB()->GetBody());
+									// check if isn't already attached or dying
+									if(!((ColorBlock*)edge->contact->GetFixtureB()->GetBody())->GetAttached() &&
+										!((ColorBlock*)edge->contact->GetFixtureB()->GetBody())->GetDying())
+									{
+										// attach on B fixture
+										(*it)->AttachTo(edge->contact->GetFixtureB()->GetBody());
+									}
 								}
 								else
 								{
-									// attach on A fixture
-									(*it)->AttachTo(edge->contact->GetFixtureA()->GetBody());
+									if(!((ColorBlock*)edge->contact->GetFixtureA()->GetBody())->GetAttached() &&
+										!((ColorBlock*)edge->contact->GetFixtureA()->GetBody())->GetDying())
+									{
+										// attach on A fixture
+										(*it)->AttachTo(edge->contact->GetFixtureA()->GetBody());
+									}
 								}
 							}
 						}
