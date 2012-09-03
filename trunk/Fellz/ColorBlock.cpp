@@ -1,5 +1,8 @@
 #include "ColorBlock.h"
 
+
+std::vector<ColorBlock*> testVector;
+
 USING_NS_CC;
 
 std::list<ColorBlock*> ColorBlock::blocksToBeDeleted;
@@ -173,14 +176,18 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 				}
 				if(((CCSprite*)collideBody->GetUserData())->getTag() == BLOCK_TAG)
 				{
-					if (((ColorBlock*)collideBody->GetUserData())->GetBlockColor() == colorBlock_s)
+					// check if it's attached
+					if (((ColorBlock*)collideBody->GetUserData())->GetAttached())
 					{
-						// ok, there's a adjacent block, must store reference to it and call build connections on them
-						// add both objects on the list do be destroyed
-						blocksToBeDeleted.push_back(this);
-						blocksToBeDeleted.push_back((ColorBlock*)collideBody->GetUserData());
-						// build connections on the next
-						((ColorBlock*)collideBody->GetUserData())->BuildConnections(this,colorBlock_s);
+						if (((ColorBlock*)collideBody->GetUserData())->GetBlockColor() == colorBlock_s)
+						{
+							// ok, there's a adjacent block, must store reference to it and call build connections on them
+							// add both objects on the list do be destroyed
+							blocksToBeDeleted.push_back(this);
+							blocksToBeDeleted.push_back((ColorBlock*)collideBody->GetUserData());
+							// build connections on the next
+							((ColorBlock*)collideBody->GetUserData())->BuildConnections(this,colorBlock_s);
+						}
 					}
 				}
 			}
@@ -225,26 +232,30 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 					// make sure it's a block
 					if(((CCSprite*)collideBody->GetUserData())->getTag() == BLOCK_TAG)
 					{
-						if (((ColorBlock*)collideBody->GetUserData())->GetBlockColor() == colorBlock_s)
+						// make sure it's attached
+						if (((ColorBlock*)collideBody->GetUserData())->GetAttached())
 						{
-							// search for this current block on blocks list
-							std::list<ColorBlock*>::iterator r_it;
-							bool dontAdd = false;
-							for (r_it = blocksToBeDeleted.begin(); r_it != blocksToBeDeleted.end();r_it++ )
+							if (((ColorBlock*)collideBody->GetUserData())->GetBlockColor() == colorBlock_s)
 							{
-								if ((*r_it) == collideBody->GetUserData())
+								// search for this current block on blocks list
+								std::list<ColorBlock*>::iterator r_it;
+								bool dontAdd = false;
+								for (r_it = blocksToBeDeleted.begin(); r_it != blocksToBeDeleted.end();r_it++ )
 								{
-									// if is already there, don't add
-									dontAdd = true;
-									break;
+									if ((*r_it) == collideBody->GetUserData())
+									{
+										// if is already there, don't add
+										dontAdd = true;
+										break;
+									}
 								}
-							}
-							if (!dontAdd)
-							{
-								// ok, there's a adjacent block, must store reference to it and call build connections on it
-								blocksToBeDeleted.push_back((ColorBlock*)collideBody->GetUserData());
-								// build connections on the next
-								((ColorBlock*)collideBody->GetUserData())->BuildConnections(this,colorBlock_s);
+								if (!dontAdd)
+								{
+									// ok, there's a adjacent block, must store reference to it and call build connections on it
+									blocksToBeDeleted.push_back((ColorBlock*)collideBody->GetUserData());
+									// build connections on the next
+									((ColorBlock*)collideBody->GetUserData())->BuildConnections(this,colorBlock_s);
+								}
 							}
 						}
 					}
@@ -259,6 +270,7 @@ void ColorBlock::Detach()
 {
 	// iterate through the list of joints
 	b2JointEdge* joints = body->GetJointList();
+
 	// destroy all the joints in this object
 	while(joints != NULL)
 	{
