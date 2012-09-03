@@ -14,7 +14,6 @@
 #define BLOCK_BLUE 1
 #define BLOCK_GREEN 2
 
-
 #define BLOCK_TAG 999
 //Color block class hold references to Box2D bodys, its a CCSprite with Box2D
 class ColorBlock : public cocos2d::CCSprite
