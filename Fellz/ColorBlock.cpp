@@ -1,8 +1,6 @@
 #include "ColorBlock.h"
 
 
-std::vector<ColorBlock*> testVector;
-
 USING_NS_CC;
 
 std::list<ColorBlock*> ColorBlock::blocksToBeDeleted;
