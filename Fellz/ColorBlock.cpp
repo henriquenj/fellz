@@ -75,8 +75,7 @@ void ColorBlock::InitInWorld(b2World* world)
 	body->CreateFixture(&blockFixture);
 
 	// make the blocks goes up
-	float velocity = (rand() % 40) / 10.0f;
-	body->SetLinearVelocity(b2Vec2(0.0,velocity));
+	body->SetLinearVelocity(b2Vec2(0.0,3.0f));
 
 	// all blocks are initialized detached
 	attached = false;
