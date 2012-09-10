@@ -75,7 +75,8 @@ void ColorBlock::InitInWorld(b2World* world)
 	body->CreateFixture(&blockFixture);
 
 	// make the blocks goes up
-	body->SetLinearVelocity(b2Vec2(0.0,3.0));
+	float velocity = (rand() % 40) / 10.0f;
+	body->SetLinearVelocity(b2Vec2(0.0,velocity));
 
 	// all blocks are initialized detached
 	attached = false;
@@ -180,7 +181,7 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 						if (((ColorBlock*)collideBody->GetUserData())->GetBlockColor() == colorBlock_s)
 						{
 							// ok, there's a adjacent block, must store reference to it and call build connections on them
-							// add both objects on the list do be destroyed
+							// add both objects on the list to be destroyed
 							blocksToBeDeleted.push_back(this);
 							blocksToBeDeleted.push_back((ColorBlock*)collideBody->GetUserData());
 							// build connections on the next

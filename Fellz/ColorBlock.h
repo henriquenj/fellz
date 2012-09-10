@@ -15,6 +15,7 @@
 #define BLOCK_GREEN 2
 
 #define BLOCK_TAG 999
+
 //Color block class hold references to Box2D bodys, its a CCSprite with Box2D
 class ColorBlock : public cocos2d::CCSprite
 {
@@ -42,15 +43,15 @@ public:
 	{
 		return body;
 	}
-	inline bool GetAttached()const
+	inline const bool GetAttached()const
 	{
 		return attached;
 	}
-	inline short GetBlockColor()const
+	inline const short GetBlockColor()const
 	{
 		return cubeColor;
 	}
-	inline bool GetDying()const
+	inline const bool GetDying()const
 	{
 		return this->isDying;
 	}

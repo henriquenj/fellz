@@ -109,9 +109,9 @@ void MainGameScene::update(float dt)
 								// attached based on this
 								if (edge->contact->GetFixtureA()->GetBody() == (*it)->GetBody())
 								{
-									// check if isn't already attached or dying
-									if(!((ColorBlock*)edge->contact->GetFixtureB()->GetBody())->GetAttached() &&
-										!((ColorBlock*)edge->contact->GetFixtureB()->GetBody())->GetDying())
+									// make sure it's already attached
+									if(((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetAttached() &&
+										!((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetDying())
 									{
 										// attach on B fixture
 										(*it)->AttachTo(edge->contact->GetFixtureB()->GetBody());
@@ -119,8 +119,8 @@ void MainGameScene::update(float dt)
 								}
 								else
 								{
-									if(!((ColorBlock*)edge->contact->GetFixtureA()->GetBody())->GetAttached() &&
-										!((ColorBlock*)edge->contact->GetFixtureA()->GetBody())->GetDying())
+									if(((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetAttached() &&
+										!((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetDying())
 									{
 										// attach on A fixture
 										(*it)->AttachTo(edge->contact->GetFixtureA()->GetBody());
