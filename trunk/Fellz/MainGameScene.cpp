@@ -165,20 +165,23 @@ void MainGameScene::update(float dt)
 
 void MainGameScene::CreateBlockCallback(float time)
 {
+	if (blocksList.size() < 4)
+	{
+		// create block on a random location
+		ColorBlock* newBlock = ColorBlock::create("Assets/block.png");
 
-	// create block on a random location
-	ColorBlock* newBlock = ColorBlock::create("Assets/block.png");
+		// randomize position
+		//newBlock->setPositionX(rand() % 800);
+		newBlock->setPositionX(300.0f);
+		// Y always in the botton
+		newBlock->setPositionY(-80.0f);
 
-	// randomize position
-	newBlock->setPositionX(rand() % 800);
-	// Y always in the botton
-	newBlock->setPositionY(-80.0f);
+		// add as a child to this layer
+		this->addChild(newBlock);
 
-	// add as a child to this layer
-	this->addChild(newBlock);
+		newBlock->InitInWorld(box2DWorld);
 
-	newBlock->InitInWorld(box2DWorld);
-
-	// add to local list
-	blocksList.push_back(newBlock);
+		// add to local list
+		blocksList.push_back(newBlock);
+	}
 }
