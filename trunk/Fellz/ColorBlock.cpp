@@ -63,7 +63,7 @@ void ColorBlock::InitInWorld(b2World* world)
 	b2PolygonShape blockShape;
 	// create shape based on the size of the sprite
 	blockShape.SetAsBox((this->boundingBox().size.width / PTM_RATIO)/2,(this->boundingBox().size.height / PTM_RATIO)/2);
-
+	
 	// connect shape with body
 	b2FixtureDef blockFixture;
 	blockFixture.shape = &blockShape;
@@ -158,7 +158,7 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 		colorBlock_s = cubeColor;
 		while(edge != NULL)
 		{
-			// must first check if the block are dying
+			// must first check if the block is dying
 			if (!((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetDying() &&
 				!((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetDying())
 			{
@@ -210,7 +210,7 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 		colorBlock_s = blockType;
 		while (edge != NULL)
 		{
-			// must first check if the block are dying
+			// must first check if the block is dying
 			if (!((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetDying() &&
 				!((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetDying())
 			{
