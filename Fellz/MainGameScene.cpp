@@ -58,8 +58,7 @@ void MainGameScene::update(float dt)
 	
 	//update character
 	mainCharacter->Update(dt);
-	// update physics engine
-	box2DWorld->Step(dt,10,10);
+
 
 	// update blocks
 	//iterate through the list
@@ -161,27 +160,27 @@ void MainGameScene::update(float dt)
 		blocksList.erase(toDelete[i]);
 	}
 
+	// update physics engine
+	box2DWorld->Step(dt,10,10);
 }
 
 void MainGameScene::CreateBlockCallback(float time)
 {
-	if (blocksList.size() < 4)
-	{
-		// create block on a random location
-		ColorBlock* newBlock = ColorBlock::create("Assets/block.png");
+	// create block on a random location
+	ColorBlock* newBlock = ColorBlock::create("Assets/block.png");
 
-		// randomize position
-		//newBlock->setPositionX(rand() % 800);
-		newBlock->setPositionX(300.0f);
-		// Y always in the botton
-		newBlock->setPositionY(-80.0f);
+	// randomize position
+	newBlock->setPositionX(rand() % 800);
+	//newBlock->setPositionX(300.0f);
+	// Y always in the botton
+	newBlock->setPositionY(-80.0f);
 
-		// add as a child to this layer
-		this->addChild(newBlock);
+	// add as a child to this layer
+	this->addChild(newBlock);
 
-		newBlock->InitInWorld(box2DWorld);
+	newBlock->InitInWorld(box2DWorld);
 
-		// add to local list
-		blocksList.push_back(newBlock);
-	}
+	// add to local list
+	blocksList.push_back(newBlock);
+
 }
