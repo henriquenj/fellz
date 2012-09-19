@@ -39,6 +39,8 @@ public:
 	// receives the type of block that'll be searched for
 	void BuildConnections(const ColorBlock* caller,const int blockType);
 
+	// hold list of pointers to the blocks that are about to be deleted
+	static std::list<ColorBlock*> blocksToBeDeleted;
 	inline b2Body* GetBody()const
 	{
 		return body;
@@ -67,8 +69,6 @@ private:
 	short cubeColor;
 	// bool that stores if a block is dying
 	bool isDying;
-	// hold list of pointers to the blocks that are about to be deleted
-	static std::list<ColorBlock*> blocksToBeDeleted;
 	// hols list pointers to the blocks that are attached to this block
 	std::list<ColorBlock*> attachedBlocks;
 };
