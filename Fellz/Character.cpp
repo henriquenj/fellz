@@ -19,7 +19,7 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 
 	// descriptor
 	b2BodyDef blockDef;
-	blockDef.type = b2_staticBody;
+	blockDef.type = b2_staticBody;	
 	// divide by the PTM ratio
 	blockDef.position.Set(sprite->getPositionX() / PTM_RATIO, sprite->getPositionY() / PTM_RATIO);
 	// define that this CCSprite is linked with this body

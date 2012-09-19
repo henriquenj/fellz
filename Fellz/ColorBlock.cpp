@@ -124,7 +124,7 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 	// set this flag with true
 	attached = true;
 
-
+	
 	b2Vec2 worldCoordsAnchorPoint = body->GetWorldPoint(b2Vec2(0.5f,0));
 	// define joint
 	b2WeldJointDef jointDef;
@@ -133,6 +133,7 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 	jointDef.localAnchorB = body->GetLocalPoint(worldCoordsAnchorPoint);
 	jointDef.localAnchorA = toAttach->GetLocalPoint(worldCoordsAnchorPoint);
 	jointDef.referenceAngle = body->GetAngle() - toAttach->GetAngle();
+	jointDef.collideConnected = true; // to prevent collisions from stoping ocurring
 	// add to world
 	world->CreateJoint(&jointDef);
 
@@ -196,6 +197,17 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 		{
 			// iterate through blocks calling destroy
 			std::list<ColorBlock*>::iterator it;
+			//std::list<ColorBlock*>::iterator it2;
+			//for (it = blocksToBeDeleted.begin(); it != blocksToBeDeleted.end(); it++)
+			//{
+			//	for (it2 = it,it2++; it2 != blocksToBeDeleted.end(); it2++)
+			//	{
+			//		if ((*it) == (*it2))
+			//		{
+			//			int b = 0;
+			//		}
+			//	}
+			//}
 			for (it = blocksToBeDeleted.begin(); it != blocksToBeDeleted.end(); it++)
 			{
 				(*it)->Destroy();
@@ -240,9 +252,9 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 								bool dontAdd = false;
 								for (r_it = blocksToBeDeleted.begin(); r_it != blocksToBeDeleted.end();r_it++ )
 								{
-									if ((*r_it) == collideBody->GetUserData())
+									if ((*r_it) == ((ColorBlock*)collideBody->GetUserData()))
 									{
-										// if is already there, don't add
+										// if its already there, don't add
 										dontAdd = true;
 										break;
 									}
