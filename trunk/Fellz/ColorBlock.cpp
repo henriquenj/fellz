@@ -11,8 +11,8 @@ ColorBlock::ColorBlock()
 	world = NULL;
 
 	// generates a random number that'll define the cube color
-	//cubeColor = rand() % 3;
-	cubeColor = 0;
+	cubeColor = rand() % 3;
+	//cubeColor = 0;
 
 	isDying = false;
 }
@@ -149,14 +149,18 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 {
 	int colorBlock_s;
+	bool dontAdd;
 	b2Body* collideBody;
 	b2ContactEdge* edge = body->GetContactList();
+	std::list<ColorBlock*>::iterator r_it;
 	// must find at least three adjacents blocks attacheds to this one
 	// first check if it's the Scene that it's calling
 	if (caller == NULL)
 	{
 		// check which type of block we need to search
 		colorBlock_s = cubeColor;
+		// add itself to the list
+		blocksToBeDeleted.push_back(this);
 		while(edge != NULL)
 		{
 			// must first check if the block is dying
@@ -180,12 +184,24 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 					{
 						if (((ColorBlock*)collideBody->GetUserData())->GetBlockColor() == colorBlock_s)
 						{
-							// ok, there's a adjacent block, must store reference to it and call build connections on them
-							// add both objects on the list to be destroyed
-							blocksToBeDeleted.push_back(this);
-							blocksToBeDeleted.push_back((ColorBlock*)collideBody->GetUserData());
-							// build connections on the next
-							((ColorBlock*)collideBody->GetUserData())->BuildConnections(this,colorBlock_s);
+							// search for this current block on blocks list
+							dontAdd = false;
+							for (r_it = blocksToBeDeleted.begin(); r_it != blocksToBeDeleted.end();r_it++ )
+							{
+								if ((*r_it) == ((ColorBlock*)collideBody->GetUserData()))
+								{
+									// if its already there, don't add
+									dontAdd = true;
+									break;
+								}
+							}
+							if (!dontAdd)
+							{
+								// ok, there's a adjacent block, must store reference to it and call build connections on them
+								blocksToBeDeleted.push_back((ColorBlock*)collideBody->GetUserData());
+								// build connections on the next
+								((ColorBlock*)collideBody->GetUserData())->BuildConnections(this,colorBlock_s);
+							}
 						}
 					}
 				}
@@ -197,17 +213,6 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 		{
 			// iterate through blocks calling destroy
 			std::list<ColorBlock*>::iterator it;
-			//std::list<ColorBlock*>::iterator it2;
-			//for (it = blocksToBeDeleted.begin(); it != blocksToBeDeleted.end(); it++)
-			//{
-			//	for (it2 = it,it2++; it2 != blocksToBeDeleted.end(); it2++)
-			//	{
-			//		if ((*it) == (*it2))
-			//		{
-			//			int b = 0;
-			//		}
-			//	}
-			//}
 			for (it = blocksToBeDeleted.begin(); it != blocksToBeDeleted.end(); it++)
 			{
 				(*it)->Destroy();
@@ -248,8 +253,7 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 							if (((ColorBlock*)collideBody->GetUserData())->GetBlockColor() == colorBlock_s)
 							{
 								// search for this current block on blocks list
-								std::list<ColorBlock*>::iterator r_it;
-								bool dontAdd = false;
+								dontAdd = false;
 								for (r_it = blocksToBeDeleted.begin(); r_it != blocksToBeDeleted.end();r_it++ )
 								{
 									if ((*r_it) == ((ColorBlock*)collideBody->GetUserData()))
