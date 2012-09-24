@@ -63,6 +63,7 @@ private:
 	b2World* world;
 	// bool that controls if the block id attached to the main character
 	bool attached;
+	ColorBlock* attachedTo; // pointer to the "parent" block
 	// stores cube color, could varies from 0 to 2
 	short cubeColor;
 	// bool that stores if a block is dying

@@ -54,6 +54,10 @@ bool MainGameScene::init()
 
 void MainGameScene::update(float dt)
 {
+
+	// update physics engine
+	box2DWorld->Step(dt,10,10);
+
 	// update game scene
 	
 	//update character
@@ -75,9 +79,9 @@ void MainGameScene::update(float dt)
 			// check if it's time to kill the block
 			if ((*it)->getPositionY() > 650.0f || (*it)->getPositionY() < -85.0f)
 			{
-				toDelete[amountToDelete] = it;
 				if(amountToDelete < 5)
 				{
+					toDelete[amountToDelete] = it;
 					amountToDelete++;
 				}
 			}
@@ -142,9 +146,9 @@ void MainGameScene::update(float dt)
 			// check if it's time to be deleted
 			if((*it)->getOpacity() == 0)
 			{
-				toDelete[amountToDelete] = it;
 				if(amountToDelete < 5)
 				{
+					toDelete[amountToDelete] = it;
 					amountToDelete++;
 				}
 			}
@@ -159,9 +163,6 @@ void MainGameScene::update(float dt)
 		// remove from local list
 		blocksList.erase(toDelete[i]);
 	}
-
-	// update physics engine
-	box2DWorld->Step(dt,10,10);
 }
 
 void MainGameScene::CreateBlockCallback(float time)
