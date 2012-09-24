@@ -9,6 +9,7 @@ ColorBlock::ColorBlock()
 {
 	body = NULL;
 	world = NULL;
+	attachedTo = NULL;
 
 	// generates a random number that'll define the cube color
 	cubeColor = rand() % 3;
@@ -123,7 +124,6 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 {
 	// set this flag with true
 	attached = true;
-
 	
 	b2Vec2 worldCoordsAnchorPoint = body->GetWorldPoint(b2Vec2(0.5f,0));
 	// define joint
@@ -141,6 +141,7 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 	if (((CCSprite*)toAttach->GetUserData())->getTag() == BLOCK_TAG)
 	{
 		((ColorBlock*)toAttach->GetUserData())->attachedBlocks.push_back(this);
+		attachedTo = (ColorBlock*)toAttach->GetUserData();
 	}
 
 	
@@ -163,21 +164,20 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 		blocksToBeDeleted.push_back(this);
 		while(edge != NULL)
 		{
-			// must first check if the block is dying
-			if (!((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetDying() &&
-				!((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetDying())
+			// hold the two first objects in the first iteration
+			// I need to know which fixture holds the current block and which holds the adjacent block
+			if (edge->contact->GetFixtureA()->GetBody() == body)
 			{
-				// hold the two first objects in the first iteration
-				// I need to know which fixture holds the current block and which holds the adjacent block
-				if (edge->contact->GetFixtureA()->GetBody() == body)
-				{
-					collideBody = edge->contact->GetFixtureB()->GetBody();
-				}
-				else
-				{
-					collideBody = edge->contact->GetFixtureA()->GetBody();
-				}
-				if(((CCSprite*)collideBody->GetUserData())->getTag() == BLOCK_TAG)
+				collideBody = edge->contact->GetFixtureB()->GetBody();
+			}
+			else
+			{
+				collideBody = edge->contact->GetFixtureA()->GetBody();
+			}
+			if(((CCSprite*)collideBody->GetUserData())->getTag() == BLOCK_TAG)
+			{
+				// must check if it's dying
+				if (!((ColorBlock*)collideBody->GetUserData())->GetDying())
 				{
 					// check if it's attached
 					if (((ColorBlock*)collideBody->GetUserData())->GetAttached())
@@ -206,6 +206,7 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 					}
 				}
 			}
+			
 			edge = edge->next;
 		}
 		// after all function returns, see if there's enough blocks to create a block anihilation
@@ -227,25 +228,24 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 		colorBlock_s = blockType;
 		while (edge != NULL)
 		{
-			// must first check if the block is dying
-			if (!((ColorBlock*)edge->contact->GetFixtureA()->GetBody()->GetUserData())->GetDying() &&
-				!((ColorBlock*)edge->contact->GetFixtureB()->GetBody()->GetUserData())->GetDying())
+			// rule out case when we're processing the collision betwen this block and the caller
+			if (edge->contact->GetFixtureA()->GetBody()->GetUserData() != caller && 
+				edge->contact->GetFixtureB()->GetBody()->GetUserData() != caller)
 			{
-				// rule out case when we're processing the collision betwen this block and the caller
-				if (edge->contact->GetFixtureA()->GetBody()->GetUserData() != caller && 
-					edge->contact->GetFixtureB()->GetBody()->GetUserData() != caller)
+				// I need to know which fixture holds the current block and which holds the adjacent block
+				if (edge->contact->GetFixtureA()->GetBody() == body)
 				{
-					// I need to know which fixture holds the current block and which holds the adjacent block
-					if (edge->contact->GetFixtureA()->GetBody() == body)
-					{
-						collideBody = edge->contact->GetFixtureB()->GetBody();
-					}
-					else
-					{
-						collideBody = edge->contact->GetFixtureA()->GetBody();
-					}
-					// make sure it's a block
-					if(((CCSprite*)collideBody->GetUserData())->getTag() == BLOCK_TAG)
+					collideBody = edge->contact->GetFixtureB()->GetBody();
+				}
+				else
+				{
+					collideBody = edge->contact->GetFixtureA()->GetBody();
+				}
+				// make sure it's a block
+				if(((CCSprite*)collideBody->GetUserData())->getTag() == BLOCK_TAG)
+				{
+					// must check if it's dying
+					if (!((ColorBlock*)collideBody->GetUserData())->GetDying())
 					{
 						// make sure it's attached
 						if (((ColorBlock*)collideBody->GetUserData())->GetAttached())
@@ -275,6 +275,7 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 					}
 				}
 			}
+			
 			edge = edge->next;
 		}
 	}
@@ -293,14 +294,26 @@ void ColorBlock::Detach()
 		joints = next;
 	}
 
+	// remove reference in parent block
+	if (attachedTo != NULL)
+	{
+		attachedTo->attachedBlocks.remove(this);
+		attachedTo = NULL;
+	}
+	
 	attached = false;
+	
+	
 
 	// iterate through the list of "childs"
 	std::list<ColorBlock*>::iterator it;
-	for (it = attachedBlocks.begin(); it != attachedBlocks.end(); it++)
+	for (it = attachedBlocks.begin(); it != attachedBlocks.end(); it = attachedBlocks.begin())
 	{
+		//if (!(*it)->GetAttached())
+		//{
+		//	int p = 0;
+		//}
 		// call detach on each one of them
 		(*it)->Detach();
 	}
-	attachedBlocks.clear();
 }
