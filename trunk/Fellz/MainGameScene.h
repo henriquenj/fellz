@@ -37,6 +37,8 @@ private:
 	Character* mainCharacter;
 	// pointer to batch (supposedly improve performance)
 	cocos2d::CCSpriteBatchNode* blocksBatch;
+	// infinite background
+	cocos2d::CCSprite* infiniteBackground;
 	// list that hold points to all blocks
 	std::list<ColorBlock*> blocksList;
 	// pointer to Box2D world
