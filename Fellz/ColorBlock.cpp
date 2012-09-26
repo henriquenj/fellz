@@ -57,6 +57,8 @@ void ColorBlock::InitInWorld(b2World* world)
 	blockDef.position.Set(this->getPositionX() / PTM_RATIO, this->getPositionY() / PTM_RATIO);
 	// define that this CCSprite is linked with this body
 	blockDef.userData = this;
+	// set random rotation for the block
+	blockDef.angle = CC_DEGREES_TO_RADIANS(rand() % 360);
 	// creates body with this descriptors
 	body = world->CreateBody(&blockDef);
 
@@ -144,7 +146,8 @@ void ColorBlock::AttachTo(b2Body* toAttach)
 		attachedTo = (ColorBlock*)toAttach->GetUserData();
 	}
 
-	
+	// attached blocks have 100% opacity
+	setOpacity(255);
 }
 
 void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
@@ -302,18 +305,18 @@ void ColorBlock::Detach()
 	}
 	
 	attached = false;
-	
-	
 
 	// iterate through the list of "childs"
 	std::list<ColorBlock*>::iterator it;
 	for (it = attachedBlocks.begin(); it != attachedBlocks.end(); it = attachedBlocks.begin())
 	{
-		//if (!(*it)->GetAttached())
-		//{
-		//	int p = 0;
-		//}
 		// call detach on each one of them
 		(*it)->Detach();
+	}
+
+	// if it isn't dying, must set opacity back to 50%
+	if (!isDying)
+	{
+		setOpacity(127);
 	}
 }

@@ -48,6 +48,10 @@ bool MainGameScene::init()
 
 	// create character
 	mainCharacter = new Character(this,box2DWorld);
+
+	// create batch 
+	blocksBatch = CCSpriteBatchNode::batchNodeWithFile("Assets/block.png");
+	this->addChild(blocksBatch);
 	
 	return true;
 }
@@ -158,8 +162,8 @@ void MainGameScene::update(float dt)
 	// delete dead ones
 	for (int i = 0; i < amountToDelete; i++)
 	{
-		// remove from layer
-		this->removeChild((*toDelete[i]),true);
+		// remove from batch
+		blocksBatch->removeChild((*toDelete[i]),true);
 		// remove from local list
 		blocksList.erase(toDelete[i]);
 	}
@@ -169,6 +173,8 @@ void MainGameScene::CreateBlockCallback(float time)
 {
 	// create block on a random location
 	ColorBlock* newBlock = ColorBlock::create("Assets/block.png");
+	// unattached blocks have 50% opacity
+	newBlock->setOpacity(127);
 
 	// randomize position
 	newBlock->setPositionX(rand() % 800);
@@ -176,8 +182,8 @@ void MainGameScene::CreateBlockCallback(float time)
 	// Y always in the botton
 	newBlock->setPositionY(-80.0f);
 
-	// add as a child to this layer
-	this->addChild(newBlock);
+	// add as a child to the batch
+	blocksBatch->addChild(newBlock);
 
 	newBlock->InitInWorld(box2DWorld);
 
