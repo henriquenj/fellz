@@ -36,11 +36,39 @@ bool MainGameScene::init()
 		return false;
 	}
 
+	// init infinite background sprite object
+	infiniteBackground = CCSprite::create();
+	infiniteBackground->setPosition(ccp(300.0f,100.0f));
+	// load sprites for infinite background
+	CCArray* imageFrames = CCArray::arrayWithCapacity(15);
+	// load all 15 frames
+	for (int p = 0; p < 15; p++)
+	{
+		CCString fileName;
+		fileName.initWithFormat("Assets/infinite_background/infinite_background_%i.jpg",p); // build file name
+		// create texture
+		CCTexture2D* texture = CCTextureCache::sharedTextureCache()->addImage(fileName.getCString());
+		// get texture size
+		CCSize texSize = texture->getContentSize();
+		CCRect texRect = CCRectMake(0,0,texSize.width,texSize.height);
+		// create frame from texture
+		CCSpriteFrame* frame = CCSpriteFrame::frameWithTexture(texture,texRect);
+		// add to array
+		imageFrames->addObject(frame);
+	}
+	
+	// now create the animation and put in a infinite loop
+	CCAnimation* anim = CCAnimation::animationWithSpriteFrames(imageFrames,0.03f);
+	CCAnimate* animate = CCAnimate::actionWithAnimation(anim); // action
+	CCRepeatForever* repeat = CCRepeatForever::actionWithAction(animate);
+
+	infiniteBackground->runAction(repeat);
+	this->addChild(infiniteBackground);
+
 	// put the update method to work
 	this->scheduleUpdate();
 
 	this->schedule(schedule_selector(MainGameScene::CreateBlockCallback),0.5f);
-
 
 	// create Box2D stuff
 	// init world
@@ -52,7 +80,7 @@ bool MainGameScene::init()
 	// create batch 
 	blocksBatch = CCSpriteBatchNode::batchNodeWithFile("Assets/block.png");
 	this->addChild(blocksBatch);
-	
+
 	return true;
 }
 
