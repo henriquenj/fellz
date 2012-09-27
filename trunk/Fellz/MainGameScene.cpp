@@ -38,7 +38,7 @@ bool MainGameScene::init()
 
 	// init infinite background sprite object
 	infiniteBackground = CCSprite::create();
-	infiniteBackground->setPosition(ccp(300.0f,100.0f));
+	infiniteBackground->setPosition(ccp(400.0f,200.0f));
 	// load sprites for infinite background
 	CCArray* imageFrames = CCArray::arrayWithCapacity(15);
 	// load all 15 frames
@@ -63,6 +63,8 @@ bool MainGameScene::init()
 	CCRepeatForever* repeat = CCRepeatForever::actionWithAction(animate);
 
 	infiniteBackground->runAction(repeat);
+	// correct scale of the sprites since I made them too big
+	infiniteBackground->setScale(0.8f);
 	this->addChild(infiniteBackground);
 
 	// put the update method to work
