@@ -31,6 +31,9 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PointsScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -53,6 +56,9 @@
     </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointsScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

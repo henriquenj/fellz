@@ -79,4 +79,14 @@ void Character::Update(float dt)
 	characterBody->SetTransform(b2Vec2(sprite->getPosition().x / PTM_RATIO,
 								sprite->getPosition().y / PTM_RATIO),
 								characterBody->GetAngle());
+
+
+	// check if the character is on the death zone
+	if (sprite->getPositionX() < 20.0f || sprite->getPositionX() > 750.0f || 
+		sprite->getPositionY() > 550.0f || sprite->getPositionY() < 20.0f)
+	{
+		// game over animation goes here
+		// for now just call the next scene
+		CCDirector::sharedDirector()->pushScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
+	}
 }

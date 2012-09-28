@@ -10,12 +10,13 @@
 #include "KeyboardInput.h"
 #include "ColorBlock.h"
 #include "Character.h"
+#include "PointsScene.h"
 
 class MainGameScene : public cocos2d::CCLayer
 {
 public:
 
-	// setup scene
+	// "constructor"
 	static cocos2d::CCScene* scene();
 
 	// "dealloc"
