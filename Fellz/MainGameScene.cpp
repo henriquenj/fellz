@@ -111,7 +111,8 @@ void MainGameScene::update(float dt)
 		if (!(*it)->GetDying())
 		{
 			// check if it's time to kill the block
-			if ((*it)->getPositionY() > 650.0f || (*it)->getPositionY() < -85.0f)
+			if ((*it)->getPositionY() > 650.0f || (*it)->getPositionY() < -85.0f ||
+				(*it)->getPositionX() < -20.0f || (*it)->getPositionX() > 850.0f)
 			{
 				if(amountToDelete < 5)
 				{
@@ -172,6 +173,14 @@ void MainGameScene::update(float dt)
 				else
 				{
 					(*it)->BuildConnections(NULL, -1);
+					// check if one of the attached blocks is on the death area
+					if ((*it)->getPositionX() < -5.0f || (*it)->getPositionX() > 810.0f || 
+						(*it)->getPositionY() > 610.0f || (*it)->getPositionY() < -5.0f)
+					{
+						// game over animation goes here
+						// for now just call the next scene
+						CCDirector::sharedDirector()->pushScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
+					}
 				}
 			}
 		}

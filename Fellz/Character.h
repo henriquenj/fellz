@@ -9,6 +9,7 @@
 
 #include "KeyboardInput.h"
 #include "ColorBlock.h"
+#include "PointsScene.h"
 // class that stores the concept of a character, processing input and other things
 class Character
 {
