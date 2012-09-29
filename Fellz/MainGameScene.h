@@ -11,6 +11,7 @@
 #include "ColorBlock.h"
 #include "Character.h"
 #include "PointsScene.h"
+#include "PointsManager.h"
 
 class MainGameScene : public cocos2d::CCLayer
 {
