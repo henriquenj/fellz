@@ -83,6 +83,10 @@ bool MainGameScene::init()
 	blocksBatch = CCSpriteBatchNode::batchNodeWithFile("Assets/block.png");
 	this->addChild(blocksBatch);
 
+	// define pointsmanager
+	pointsManager = PointsManager::create();
+	this->addChild(pointsManager);
+
 	return true;
 }
 

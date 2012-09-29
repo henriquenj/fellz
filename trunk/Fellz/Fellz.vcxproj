@@ -92,6 +92,7 @@
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGameScene.cpp" />
+    <ClCompile Include="PointsManager.cpp" />
     <ClCompile Include="PointsScene.cpp" />
     <ClCompile Include="WaitingConnectionScene.cpp" />
   </ItemGroup>
@@ -102,6 +103,7 @@
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainGameScene.h" />
+    <ClInclude Include="PointsManager.h" />
     <ClInclude Include="PointsScene.h" />
     <ClInclude Include="WaitingConnectionScene.h" />
   </ItemGroup>
