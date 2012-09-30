@@ -5,6 +5,7 @@
 
 #include "cocos2d.h"
 #include "Box2D\Box2D.h"
+#include "PointsManager.h"
 
 // pixels per meter
 #define PTM_RATIO 32

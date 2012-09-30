@@ -5,9 +5,7 @@ USING_NS_CC;
 
 CCScene* WaitingConnectionScene::scene()
 {
-
 	// alloc scene 
-
 
 	// 'scene' is an autorelease object
     CCScene *scene = CCScene::create();

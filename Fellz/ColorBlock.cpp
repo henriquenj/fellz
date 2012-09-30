@@ -221,6 +221,9 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 			{
 				(*it)->Destroy();
 			}
+
+			// update points
+			pointsManager->AnihilationHappened(blocksToBeDeleted.size(),this->getPosition());
 		}
 		//...anyway, erase all content of the list
 		blocksToBeDeleted.clear();
