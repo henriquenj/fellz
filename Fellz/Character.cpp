@@ -9,7 +9,7 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 	this->world = world;
 
 	// load asset and put in the right spot
-	sprite = CCSprite::create("Assets/meat_boy_by_barakaldo-d3apehs.png");
+	sprite = CCSprite::create("Assets/character.png");
 	sprite->setPosition(ccp(400.0f,500.0f));
 	sprite->setTag(CHARACTER_TAG);
 	layer->addChild(sprite);
@@ -52,33 +52,62 @@ Character::~Character(void)
 
 void Character::Update(float dt)
 {
+	// grab rotation
+	float rotation = sprite->getRotation();
+	// to control if a player pressed a button
+	bool pressed = false;
+
 	// perform Input
 	if(KeyboardInput::GetKey(CC_KEY_UP))
 	{
 		// go up
 		sprite->setPosition(ccp(sprite->getPositionX(),sprite->getPositionY() + dt * 100.0f));
+		pressed = true;
 	}
 	if (KeyboardInput::GetKey(CC_KEY_DOWN))
 	{
 		// go down
 		sprite->setPosition(ccp(sprite->getPositionX(),sprite->getPositionY() - dt * 100.0f));
+		pressed = true;
 	}
 	if (KeyboardInput::GetKey(CC_KEY_LEFT))
 	{
 		//go left
 		sprite->setPosition(ccp(sprite->getPositionX() - dt * 100.0f,sprite->getPositionY()));
+		// uodate rotation
+		rotation += dt * 10;
+		pressed = true;
 	}
 	if (KeyboardInput::GetKey(CC_KEY_RIGHT))
 	{
 		// go right
 		sprite->setPosition(ccp(sprite->getPositionX() + dt * 100.0f,sprite->getPositionY()));
+		// uodate rotation
+		rotation -= dt * 10;
+		pressed = true;
 	}
 
+	// make the sprite goes back to first positions after being rotate
+	if (pressed == false)
+	{
+		if (rotation < -0.5f)
+		{
+			// tries to goes back to 0.0
+			rotation += dt * 10;
+		}
+		else if (rotation > 0.5f)
+		{
+			rotation -= dt * 10;
+		}
+	}
+
+	// put back rotation
+	sprite->setRotation(rotation);
 
 	// update body position based on CCSprite position
 	characterBody->SetTransform(b2Vec2(sprite->getPosition().x / PTM_RATIO,
 								sprite->getPosition().y / PTM_RATIO),
-								characterBody->GetAngle());
+								-1 * CC_DEGREES_TO_RADIANS(sprite->getRotation()));
 
 
 	// check if the character is on the death zone
