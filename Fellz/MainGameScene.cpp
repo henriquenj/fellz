@@ -27,6 +27,7 @@ MainGameScene::~MainGameScene()
 	this->removeAllChildrenWithCleanup(true);
 	// delete Box2D world
 	delete box2DWorld;
+
 }
 
 bool MainGameScene::init()
@@ -87,12 +88,18 @@ bool MainGameScene::init()
 	pointsManager = PointsManager::create();
 	this->addChild(pointsManager);
 
+	// shows debug draw on debug builds
+#ifdef _DEBUG
+	// create de debug draw
+	Box2DDebugDraw* debugDraw = Box2DDebugDraw::create(box2DWorld);
+	this->addChild(debugDraw,1000);
+#endif // _DEBUG
+
 	return true;
 }
 
 void MainGameScene::update(float dt)
 {
-
 	// update physics engine
 	box2DWorld->Step(dt,10,10);
 
@@ -100,7 +107,6 @@ void MainGameScene::update(float dt)
 	
 	//update character
 	mainCharacter->Update(dt);
-
 
 	// update blocks
 	//iterate through the list

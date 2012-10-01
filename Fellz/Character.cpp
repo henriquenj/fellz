@@ -10,10 +10,9 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 
 	// load asset and put in the right spot
 	sprite = CCSprite::create("Assets/character.png");
-	sprite->setPosition(ccp(400.0f,500.0f));
+	sprite->setPosition(ccp(400.0f,400.0f));
 	sprite->setTag(CHARACTER_TAG);
 	layer->addChild(sprite);
-
 
 	// create body stuff here
 
@@ -30,7 +29,7 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 	// now comes the shape
 	b2PolygonShape blockShape;
 	// create shape based on the size of the sprite
-	blockShape.SetAsBox((sprite->boundingBox().size.width / PTM_RATIO) / 2,(sprite->boundingBox().size.height / PTM_RATIO) / 2);
+	blockShape.SetAsBox((sprite->boundingBox().size.width / PTM_RATIO) / 4.6,(sprite->boundingBox().size.height / PTM_RATIO) / 2);
 
 	// connect shape with body
 	b2FixtureDef blockFixture;
@@ -75,7 +74,7 @@ void Character::Update(float dt)
 		//go left
 		sprite->setPosition(ccp(sprite->getPositionX() - dt * 100.0f,sprite->getPositionY()));
 		// uodate rotation
-		rotation += dt * 10;
+		rotation -= dt * 10;
 		pressed = true;
 	}
 	if (KeyboardInput::GetKey(CC_KEY_RIGHT))
@@ -83,21 +82,21 @@ void Character::Update(float dt)
 		// go right
 		sprite->setPosition(ccp(sprite->getPositionX() + dt * 100.0f,sprite->getPositionY()));
 		// uodate rotation
-		rotation -= dt * 10;
+		rotation += dt * 10;
 		pressed = true;
 	}
 
 	// make the sprite goes back to first positions after being rotate
 	if (pressed == false)
 	{
-		if (rotation < -0.5f)
+		if (rotation > 0.5f)
 		{
 			// tries to goes back to 0.0
-			rotation += dt * 10;
-		}
-		else if (rotation > 0.5f)
-		{
 			rotation -= dt * 10;
+		}
+		else if (rotation < -0.5f)
+		{
+			rotation += dt * 10;
 		}
 	}
 

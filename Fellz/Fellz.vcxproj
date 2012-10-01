@@ -89,6 +89,7 @@
     <ClCompile Include="AppDelegate.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ColorBlock.cpp" />
+    <ClCompile Include="GLES-Render.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGameScene.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="AppDelegate.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ColorBlock.h" />
+    <ClInclude Include="GLES-Render.h" />
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainGameScene.h" />
