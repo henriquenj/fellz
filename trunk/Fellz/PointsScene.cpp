@@ -30,6 +30,5 @@ bool PointsScene::init()
 	{
 		return false;
 	}
-
 	return true;
 }

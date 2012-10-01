@@ -37,6 +37,9 @@
     <ClCompile Include="PointsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLES-Render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -64,6 +67,9 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="PointsManager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES-Render.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
