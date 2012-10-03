@@ -91,8 +91,8 @@ bool MainGameScene::init()
 	// shows debug draw on debug builds
 #ifdef _DEBUG
 	// create de debug draw
-	Box2DDebugDraw* debugDraw = Box2DDebugDraw::create(box2DWorld);
-	this->addChild(debugDraw,1000);
+	//Box2DDebugDraw* debugDraw = Box2DDebugDraw::create(box2DWorld);
+	//this->addChild(debugDraw,1000);
 #endif // _DEBUG
 
 	return true;
@@ -184,8 +184,8 @@ void MainGameScene::update(float dt)
 				{
 					(*it)->BuildConnections(NULL, -1);
 					// check if one of the attached blocks is on the death area
-					if ((*it)->getPositionX() < -5.0f || (*it)->getPositionX() > 810.0f || 
-						(*it)->getPositionY() > 610.0f || (*it)->getPositionY() < -5.0f)
+					if ((*it)->getPositionX() < 0.0f || (*it)->getPositionX() > 800.0f || 
+						(*it)->getPositionY() > 600.0f || (*it)->getPositionY() < 0.0f)
 					{
 						// game over animation goes here
 						// for now just call the next scene
