@@ -21,6 +21,9 @@ public:
 	void update(float dt);
 	// Call this function when a anihilation happaned, passing the number of blocks and the spot where it happened
 	void AnihilationHappened(int numberOfBlocks, cocos2d::CCPoint spot);
+	// function to be called every time a text must be deleted
+	// receive the text to be deleted as parameter
+	void DeleteTextCallback(cocos2d::CCObject* object);
 private:
 	// player points
 	int points;

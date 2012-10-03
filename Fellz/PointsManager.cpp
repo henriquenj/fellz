@@ -56,4 +56,27 @@ void PointsManager::AnihilationHappened(int numberOfBlocks, cocos2d::CCPoint spo
 	// update number of points
 	pointsToDisplay.initWithFormat("%i",points);
 	pointsLabel->setCString(pointsToDisplay.getCString());
+
+
+	// create a flying number on the screen
+	CCString flyingNumberString;
+	flyingNumberString.initWithFormat("%i",addpoints);
+	CCLabelBMFont* flyingNumber = CCLabelBMFont::create(flyingNumberString.getCString(),"Assets/badab.fnt");
+	flyingNumber->setColor(ccc3(0,0,0));
+	flyingNumber->setPosition(spot);
+	//put some nice actions on the number
+	CCAction* sequence = CCSequence::create(CCDelayTime::actionWithDuration(1.0),
+											  CCFadeOut::actionWithDuration(1.0f),
+											  CCCallFuncO::actionWithTarget(this,callfuncO_selector(PointsManager::DeleteTextCallback),flyingNumber),
+											  NULL);
+	// add to node
+	flyingNumber->runAction(sequence);
+	flyingNumber->runAction(CCMoveBy::actionWithDuration(2.0f,ccp(0.0f,120.0f)));
+	this->addChild(flyingNumber);
+}
+
+void PointsManager::DeleteTextCallback(cocos2d::CCObject* object)
+{
+	// remove text from node
+	this->removeChild((CCNode*)object,true);
 }

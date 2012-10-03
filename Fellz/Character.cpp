@@ -27,19 +27,40 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 	characterBody = world->CreateBody(&blockDef);
 
 	// now comes the shape
-	b2PolygonShape blockShape;
+	b2PolygonShape trunkShape;
 	// create shape based on the size of the sprite
-	blockShape.SetAsBox((sprite->boundingBox().size.width / PTM_RATIO) / 4.6,(sprite->boundingBox().size.height / PTM_RATIO) / 2);
+	trunkShape.SetAsBox((sprite->boundingBox().size.width / PTM_RATIO) / 4.6,(sprite->boundingBox().size.height / PTM_RATIO) / 2);
 
+	// we gonna need to set the points on hand
+	b2Vec2 vertex[4];
+	vertex[0].x = -2;
+	vertex[0].y = 2;
+	vertex[1].x = -2;
+	vertex[1].y = 1;
+	vertex[2].x = 2;
+	vertex[2].y = 1;
+	vertex[3].x = 2;
+	vertex[3].y = 2;
+	// create other shape for arms
+	b2PolygonShape arm;
+	arm.Set(vertex,4);
+	
 	// connect shape with body
-	b2FixtureDef blockFixture;
-	blockFixture.shape = &blockShape;
-	blockFixture.density = 1.0f;
-	blockFixture.friction = 0.2f;
-	blockFixture.restitution = 0.8f;
+	b2FixtureDef trunkFixture;
+	trunkFixture.shape = &trunkShape;
+	trunkFixture.density = 1.0f;
+	trunkFixture.friction = 0.2f;
+	trunkFixture.restitution = 0.8f;
+
+	b2FixtureDef armFixture;
+	armFixture.shape = &arm;
+	armFixture.density = 1.0f;
+	armFixture.friction = 0.2f;
+	armFixture.restitution = 0.8f;
 
 	// add to body
-	characterBody->CreateFixture(&blockFixture);
+	characterBody->CreateFixture(&armFixture);
+	characterBody->CreateFixture(&trunkFixture);
 }
 
 
@@ -110,8 +131,8 @@ void Character::Update(float dt)
 
 
 	// check if the character is on the death zone
-	if (sprite->getPositionX() < 20.0f || sprite->getPositionX() > 750.0f || 
-		sprite->getPositionY() > 550.0f || sprite->getPositionY() < 20.0f)
+	if (sprite->getPositionX() < 60.0f || sprite->getPositionX() > 740.0f || 
+		sprite->getPositionY() > 530.0f || sprite->getPositionY() < 70.0f)
 	{
 		// game over animation goes here
 		// for now just call the next scene
