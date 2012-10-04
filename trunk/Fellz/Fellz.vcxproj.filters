@@ -8,6 +8,9 @@
     <Filter Include="Scenes">
       <UniqueIdentifier>{3b2ce8f3-3aa5-4ddc-b41c-25dbf997f3be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PowerUps">
+      <UniqueIdentifier>{a07a6a0e-252f-417a-961b-2f502a8fb257}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -40,6 +43,12 @@
     <ClCompile Include="GLES-Render.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PowerUp.cpp">
+      <Filter>PowerUps</Filter>
+    </ClCompile>
+    <ClCompile Include="WarningSign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -70,6 +79,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="GLES-Render.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUp.h">
+      <Filter>PowerUps</Filter>
+    </ClInclude>
+    <ClInclude Include="WarningSign.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

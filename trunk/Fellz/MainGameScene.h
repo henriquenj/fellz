@@ -34,6 +34,12 @@ public:
 
 	// function callback of createblocks timer
 	void CreateBlockCallback(float time);
+
+	// Get character
+	inline const Character* GetCharcter()const
+	{
+		return mainCharacter;
+	}
 	
 private:
 	// represents the main character
@@ -47,6 +53,8 @@ private:
 	// pointer to Box2D world
 	// hold all related Box2D stuff
 	b2World* box2DWorld;
+	// warning signal node
+	WarningSign* warning;
 
 };
 
