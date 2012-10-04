@@ -2,7 +2,7 @@
 
 USING_NS_CC;
 
-Character::Character(cocos2d::CCLayer* layer,b2World* world)
+Character::Character(cocos2d::CCLayer* layer,b2World* world,WarningSign* warning)
 {
 	// copy references
 	this->layer = layer;
@@ -61,6 +61,8 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 	// add to body
 	characterBody->CreateFixture(&armFixture);
 	characterBody->CreateFixture(&trunkFixture);
+
+	this->warning = warning;
 }
 
 
@@ -129,7 +131,7 @@ void Character::Update(float dt)
 								sprite->getPosition().y / PTM_RATIO),
 								-1 * CC_DEGREES_TO_RADIANS(sprite->getRotation()));
 
-
+	warning->ShowWarn(NULL);
 	// check if the character is on the death zone
 	if (sprite->getPositionX() < 60.0f || sprite->getPositionX() > 740.0f || 
 		sprite->getPositionY() > 530.0f || sprite->getPositionY() < 70.0f)
@@ -138,4 +140,5 @@ void Character::Update(float dt)
 		// for now just call the next scene
 		CCDirector::sharedDirector()->pushScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
 	}
+
 }
