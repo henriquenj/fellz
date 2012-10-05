@@ -11,14 +11,11 @@ class WarningSign : public cocos2d::CCNode
 {
 public:
 
-	static WarningSign* create(std::list<ColorBlock*> *blocksList);
-	WarningSign(std::list<ColorBlock*> *blocksList);
+	static WarningSign* create(std::list<ColorBlock*> *blocksList,b2World* world);
+	WarningSign(std::list<ColorBlock*> *blocksList,b2World* world);
 	virtual ~WarningSign(void);
 
 	void update(float dt);
-	// call this to make WarningSign process the warning on the screen passing a block to watchout
-	// send NULL case it is the character
-	void ShowWarn(ColorBlock* block);
 
 private:
 	// four sprites of each kind to each corner of screen
@@ -32,14 +29,17 @@ private:
 	cocos2d::CCSprite* topSignal;
 	cocos2d::CCSprite* botSignal;
 
-	// bool to control internal logic
-	bool left, right, top, bot;
 	// variables to control the most dangerous blocks
 	int topMost, leftMost, rightMost, botMost;
+	// for internal logic
+	bool bot, top, left, right;
 
 	// local reference to list of blocks
 	std::list<ColorBlock*> *blocksList;
-	ColorBlock *topBlock, *leftBlock, *rightBlock, *botBlock;
+	// local reference
+	b2World* world;
+	// 4 bodies to age as sensors
+	b2Body *left_b, *top_b, *right_b, *bot_b;
 };
 
 
