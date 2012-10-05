@@ -77,7 +77,7 @@ bool MainGameScene::init()
 	// init world
 	box2DWorld = new b2World(b2Vec2(0.0f,0.0f));
 
-	warning = WarningSign::create(&blocksList);
+	warning = WarningSign::create(&blocksList,box2DWorld);
 	this->addChild(warning,30);
 
 	// create character
@@ -94,8 +94,8 @@ bool MainGameScene::init()
 	// shows debug draw on debug builds
 #ifdef _DEBUG
 	// create de debug draw
-	Box2DDebugDraw* debugDraw = Box2DDebugDraw::create(box2DWorld);
-	this->addChild(debugDraw,1000);
+	//Box2DDebugDraw* debugDraw = Box2DDebugDraw::create(box2DWorld);
+	//this->addChild(debugDraw,1000);
 #endif // _DEBUG
 
 	return true;
@@ -186,21 +186,16 @@ void MainGameScene::update(float dt)
 				else
 				{
 					(*it)->BuildConnections(NULL, -1);
-					// chekc if one of the attached blocks is on warning area
-					if ((*it)->getPositionX() < 30.0f || (*it)->getPositionX() > 700.0f || 
-						(*it)->getPositionY() > 500.0f || (*it)->getPositionY() < 30.0f)
+
+					// check if one of the attached blocks is on the death area
+					if ((*it)->getPositionX() < 0.0f || (*it)->getPositionX() > 800.0f || 
+						(*it)->getPositionY() > 600.0f || (*it)->getPositionY() < 0.0f)
 					{
-						// send warning
-						warning->ShowWarn(*it);
-						// check if one of the attached blocks is on the death area
-						if ((*it)->getPositionX() < 0.0f || (*it)->getPositionX() > 800.0f || 
-							(*it)->getPositionY() > 600.0f || (*it)->getPositionY() < 0.0f)
-						{
-							// game over animation goes here
-							// for now just call the next scene
-							CCDirector::sharedDirector()->pushScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
-						}
+						// game over animation goes here
+						// for now just call the next scene
+						CCDirector::sharedDirector()->pushScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
 					}
+
 				}
 			}
 		}

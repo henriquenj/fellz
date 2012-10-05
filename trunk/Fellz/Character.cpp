@@ -131,7 +131,6 @@ void Character::Update(float dt)
 								sprite->getPosition().y / PTM_RATIO),
 								-1 * CC_DEGREES_TO_RADIANS(sprite->getRotation()));
 
-	warning->ShowWarn(NULL);
 	// check if the character is on the death zone
 	if (sprite->getPositionX() < 60.0f || sprite->getPositionX() > 740.0f || 
 		sprite->getPositionY() > 530.0f || sprite->getPositionY() < 70.0f)
