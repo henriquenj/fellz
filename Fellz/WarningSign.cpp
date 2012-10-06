@@ -3,7 +3,7 @@
 #include "MainGameScene.h"
 USING_NS_CC;
 
-WarningSign::WarningSign(std::list<ColorBlock*> *blocksList,b2World* world)
+WarningSign::WarningSign(b2World* world)
 {
 	
 	// load the assets and put into node
@@ -66,7 +66,6 @@ WarningSign::WarningSign(std::list<ColorBlock*> *blocksList,b2World* world)
 	leftMost = botMost = 900;
 	topMost = rightMost = -900;
 
-	this->blocksList = blocksList;
 	this->world = world;
 
 	// create sensors using box2d
@@ -110,9 +109,9 @@ WarningSign::~WarningSign(void)
 {
 }
 
-WarningSign* WarningSign::create(std::list<ColorBlock*> *blocksList,b2World* world)
+WarningSign* WarningSign::create(b2World* world)
 {
-	WarningSign * pRet = new WarningSign(blocksList,world);
+	WarningSign * pRet = new WarningSign(world);
 	pRet->autorelease();
 	return pRet;
 }

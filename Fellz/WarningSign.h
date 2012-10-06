@@ -11,8 +11,8 @@ class WarningSign : public cocos2d::CCNode
 {
 public:
 
-	static WarningSign* create(std::list<ColorBlock*> *blocksList,b2World* world);
-	WarningSign(std::list<ColorBlock*> *blocksList,b2World* world);
+	static WarningSign* create(b2World* world);
+	WarningSign(b2World* world);
 	virtual ~WarningSign(void);
 
 	void update(float dt);
@@ -34,8 +34,6 @@ private:
 	// for internal logic
 	bool bot, top, left, right;
 
-	// local reference to list of blocks
-	std::list<ColorBlock*> *blocksList;
 	// local reference
 	b2World* world;
 	// 4 bodies to age as sensors
