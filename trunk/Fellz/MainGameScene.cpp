@@ -77,7 +77,7 @@ bool MainGameScene::init()
 	// init world
 	box2DWorld = new b2World(b2Vec2(0.0f,0.0f));
 
-	warning = WarningSign::create(&blocksList,box2DWorld);
+	warning = WarningSign::create(box2DWorld);
 	this->addChild(warning,30);
 
 	// create character
