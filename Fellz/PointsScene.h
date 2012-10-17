@@ -2,7 +2,7 @@
 #define __POINTS_SCENE__
 
 #include "cocos2d.h"
-
+#include "PointsManager.h"
 // PointsScene class it is showed after the game's end
 class PointsScene : public cocos2d::CCLayer
 {
@@ -19,6 +19,13 @@ public:
 
 	// implement the "static node()" method manually
 	LAYER_CREATE_FUNC(PointsScene);
+
+	// points increase callback
+	void PointsIncreaseCallback(cocos2d::CCObject* obj);
+
+private:
+	int animationValue;
+
 };
 
 

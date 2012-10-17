@@ -103,8 +103,6 @@ bool MainGameScene::init()
 
 void MainGameScene::update(float dt)
 {
-	// update physics engine
-	box2DWorld->Step(dt,10,10);
 
 	// update game scene
 	
@@ -193,7 +191,10 @@ void MainGameScene::update(float dt)
 					{
 						// game over animation goes here
 						// for now just call the next scene
+						//CCDirector::sharedDirector()->replaceScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
 						CCDirector::sharedDirector()->pushScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
+						// to prevent thousands of scenes being created
+						this->unscheduleUpdate();
 					}
 
 				}
@@ -221,6 +222,9 @@ void MainGameScene::update(float dt)
 		// remove from local list
 		blocksList.erase(toDelete[i]);
 	}
+
+	// update physics engine
+	box2DWorld->Step(dt,20,20);
 }
 
 void MainGameScene::CreateBlockCallback(float time)

@@ -24,6 +24,11 @@ public:
 	// function to be called every time a text must be deleted
 	// receive the text to be deleted as parameter
 	void DeleteTextCallback(cocos2d::CCObject* object);
+	// Get number of points
+	inline const int GetPoints()const
+	{
+		return points;
+	}
 private:
 	// player points
 	int points;
