@@ -138,6 +138,8 @@ void Character::Update(float dt)
 		// game over animation goes here
 		// for now just call the next scene
 		CCDirector::sharedDirector()->pushScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
+		// to prevent thousands of scenes being created
+		CCDirector::sharedDirector()->getRunningScene()->unscheduleUpdate();
 	}
 
 }
