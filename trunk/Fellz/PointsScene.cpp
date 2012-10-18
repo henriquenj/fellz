@@ -44,8 +44,8 @@ bool PointsScene::init()
 	numbersText->setColor(ccc3(255,255,255));
 	CCMoveTo* moveTo2 = CCMoveTo::actionWithDuration(1.0f,ccp(400.0f,300.0f));
 	// this action will increase the points counter until it hit the current points number
-	// create a action with 1.0f delay
-	CCSequence* sequence = CCSequence::create(CCDelayTime::actionWithDuration(0.02f),
+	// create a action with delay
+	CCSequence* sequence = CCSequence::create(CCDelayTime::actionWithDuration(0.05f),
 		CCCallFuncO::create(this,callfuncO_selector(PointsScene::PointsIncreaseCallback),numbersText));
 	// initial movement
 	CCSequence* sequence2 = CCSequence::create(moveTo2,CCRepeat::actionWithAction(sequence,9999));
@@ -61,18 +61,12 @@ bool PointsScene::init()
 
 void PointsScene::PointsIncreaseCallback(cocos2d::CCObject* obj)
 {
-	// get final points
-	int finalPoints = pointsManager->GetPoints();
-
-	if (animationValue < finalPoints)
+	if (animationValue+5 > pointsManager->GetPoints())
 	{
-		animationValue++;
+		animationValue = pointsManager->GetPoints();
+		this->stopAllActions();
 	}
-	else
-	{
-		// remove all actions
-		((CCLabelBMFont*)obj)->stopAllActions();
-	}
+	else{animationValue+=5;}
 
 	// prepare string
 	CCString numberString;

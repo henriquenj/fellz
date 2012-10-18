@@ -30,19 +30,11 @@ PointsManager::PointsManager()
 	pointsLabelWord->setPositionY(30.0f);
 	pointsLabelWord->setPositionX(680.0f);
 	this->addChild(pointsLabelWord);
-
-	// to put the update method to work
-	this->scheduleUpdate();
 }
 
 PointsManager::~PointsManager()
 {
 	
-}
-
-void PointsManager::update(float dt)
-{
-
 }
 
 void PointsManager::AnihilationHappened(int numberOfBlocks, cocos2d::CCPoint spot)
