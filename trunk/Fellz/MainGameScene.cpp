@@ -68,6 +68,9 @@ bool MainGameScene::init()
 	infiniteBackground->setScale(0.8f);
 	this->addChild(infiniteBackground);
 
+	// pre load the power up assets
+	CCTextureCache::sharedTextureCache()->addImage("Assets/redSpecial.png");
+
 	// put the update method to work
 	this->scheduleUpdate();
 

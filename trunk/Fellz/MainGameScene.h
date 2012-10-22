@@ -13,6 +13,7 @@
 #include "PointsScene.h"
 #include "PointsManager.h"
 #include "GLES-Render.h"
+#include "PowerUp.h"
 
 class MainGameScene : public cocos2d::CCLayer
 {

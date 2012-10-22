@@ -47,12 +47,14 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world,WarningSign* warning
 	
 	// connect shape with body
 	b2FixtureDef trunkFixture;
+	trunkFixture.filter.categoryBits = 0x0004;
 	trunkFixture.shape = &trunkShape;
 	trunkFixture.density = 1.0f;
 	trunkFixture.friction = 0.2f;
 	trunkFixture.restitution = 0.8f;
 
 	b2FixtureDef armFixture;
+	armFixture.filter.categoryBits = 0x0004;
 	armFixture.shape = &arm;
 	armFixture.density = 1.0f;
 	armFixture.friction = 0.2f;

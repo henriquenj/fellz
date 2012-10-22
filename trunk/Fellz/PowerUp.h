@@ -7,16 +7,20 @@
 #include "cocos2d.h"
 #include "Box2D\Box2D.h"
 #include "ColorBlock.h"
+
+
+// defines that set each type of power up
+#define SPECIAL_RED 0
+
 // power up base class provide interface for the rest of power ups objects
-// take care of sprite drawning, collision detection and power up usage
-// subject to change
-class PowerUp : cocos2d::CCSprite
+// take care of sprite drawning and collision detection 
+class PowerUp : public cocos2d::CCSprite
 {
 public:
 
-	static PowerUp* create(const char * file, b2World *world, cocos2d::CCPoint &position);
+	static PowerUp* create(const char * file, b2World *world);
 
-	PowerUp(b2World *world,cocos2d::CCPoint &position);
+	PowerUp(b2World *world);
 	
 	// 'dealloc'
 	virtual ~PowerUp(void);
@@ -24,11 +28,26 @@ public:
 	// called each frame
 	void update(float dt);
 
+	// set the type of power up according the defines
+	inline void SetKind(const unsigned short kind)
+	{
+		this->kind = kind;
+	}
+	// get the type of power up according the defines
+	inline const unsigned short GetKind()const
+	{
+		return kind;
+	}
+
+	void setPosition(const cocos2d::CCPoint& pos);
+
 private:
 	// local reference to world object
 	b2World* world;
 	// reference to body
 	b2Body* body;
+	// kind of power up
+	unsigned short kind;
 };
 
 

@@ -13,7 +13,13 @@ ColorBlock::ColorBlock()
 
 	// generates a random number that'll define the cube color
 	cubeColor = rand() % 3;
-	//cubeColor = 0;
+
+	int powerUpChange = rand() % 10;
+	if (powerUpChange > 5)
+	{
+		hasPowerUp = true;
+	}
+	else {hasPowerUp = false;}
 
 	isDying = false;
 }
@@ -118,6 +124,14 @@ void ColorBlock::Destroy()
 	// put a fade in the block, will last 0.5 seconds
 	CCFadeOut* fade = CCFadeOut::actionWithDuration(0.5f);
 	this->runAction(fade);
+
+	if (hasPowerUp)
+	{
+		PowerUp* up = PowerUp::create("Assets/redSpecial.png",world);
+		up->setPosition(this->getPosition());
+		this->getParent()->getParent()->addChild(up);
+	}
+
 
 	Detach();
 }

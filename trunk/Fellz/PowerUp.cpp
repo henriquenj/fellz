@@ -2,11 +2,11 @@
 
 USING_NS_CC;
 
-PowerUp* PowerUp::create(const char * file,b2World *world, CCPoint &position)
+PowerUp* PowerUp::create(const char * file,b2World *world)
 {
 	// I hope that I made the corret init sequence
 
-	PowerUp *pobSprite = new PowerUp(world,position);
+	PowerUp *pobSprite = new PowerUp(world);
     if (pobSprite && pobSprite->initWithFile(file))
     {
         pobSprite->autorelease();
@@ -29,12 +29,10 @@ void PowerUp::update(float dt)
 	this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
 }
 
-PowerUp::PowerUp(b2World *world,CCPoint &position)
+PowerUp::PowerUp(b2World *world)
 {
 	this->world = world;
 	this->scheduleUpdate();
-
-	this->setPosition(position);
 
 	// descriptor
 	b2BodyDef powerDef;
@@ -52,10 +50,12 @@ PowerUp::PowerUp(b2World *world,CCPoint &position)
 	// now comes the shape
 	b2CircleShape powerShape;
 	// create shape based on the size of the sprite
-	powerShape.m_radius = 32.0f / PTM_RATIO;
+	powerShape.m_radius = 16.0f / PTM_RATIO;
 	
 	// connect shape with body
 	b2FixtureDef powerFixture;
+	// make that fixture only collides with power up objects
+	powerFixture.filter.maskBits = 0x0004;
 	powerFixture.shape = &powerShape;
 	powerFixture.density = 1.0f;
 	powerFixture.friction = 0.2f;
@@ -65,6 +65,16 @@ PowerUp::PowerUp(b2World *world,CCPoint &position)
 	body->CreateFixture(&powerFixture);
 
 	// make the blocks goes up
-	body->SetLinearVelocity(b2Vec2(0.0,3.0f));
+	body->SetLinearVelocity(b2Vec2(0.0,2.0f));
+	body->SetAngularVelocity((rand() % 10) / 10.0f);
 }
 
+void PowerUp::setPosition(const cocos2d::CCPoint& pos)
+{
+	CCSprite::setPosition(pos);
+	// must update body so this could work
+	body->SetTransform(b2Vec2(this->getPosition().x / PTM_RATIO,
+						this->getPosition().y / PTM_RATIO),
+						body->GetAngle());
+
+}

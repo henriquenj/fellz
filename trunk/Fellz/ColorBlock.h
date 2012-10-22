@@ -6,6 +6,7 @@
 #include "cocos2d.h"
 #include "Box2D\Box2D.h"
 #include "PointsManager.h"
+#include "PowerUp.h"
 
 // pixels per meter
 #define PTM_RATIO 32
@@ -73,6 +74,8 @@ private:
 	std::list<ColorBlock*> attachedBlocks;
 	// hold list of pointers to the blocks that are about to be deleted
 	static std::list<ColorBlock*> blocksToBeDeleted;
+	// this bool controls if a given block has a power up inside
+	bool hasPowerUp;
 };
 
 
