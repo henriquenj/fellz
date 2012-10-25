@@ -101,6 +101,12 @@ bool MainGameScene::init()
 	//this->addChild(debugDraw,1000);
 #endif // _DEBUG
 
+	CCParticleExplosion* explosion = CCParticleExplosion::create();
+	explosion->setPosition(ccp(200,300));
+	explosion->setTexture(CCTextureCache::sharedTextureCache()->addImage("Assets/block.png"));
+	explosion->setAutoRemoveOnFinish(true);
+	this->addChild(explosion);
+
 	return true;
 }
 
