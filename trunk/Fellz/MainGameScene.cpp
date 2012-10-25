@@ -70,6 +70,7 @@ bool MainGameScene::init()
 
 	// pre load the power up assets
 	CCTextureCache::sharedTextureCache()->addImage("Assets/redSpecial.png");
+	CCTextureCache::sharedTextureCache()->addImage("Assets/particle.png");
 
 	// put the update method to work
 	this->scheduleUpdate();
