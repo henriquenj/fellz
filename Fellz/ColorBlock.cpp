@@ -14,6 +14,7 @@ ColorBlock::ColorBlock()
 	// generates a random number that'll define the cube color
 	cubeColor = rand() % 3;
 
+	// see if the block will contain a power up
 	int powerUpChange = rand() % 10;
 	if (powerUpChange > 5)
 	{
@@ -130,6 +131,17 @@ void ColorBlock::Destroy()
 		PowerUp* up = PowerUp::create("Assets/redSpecial.png",world);
 		up->setPosition(this->getPosition());
 		this->getParent()->getParent()->addChild(up);
+
+		// add some nice particles upon birth
+		CCParticleSystem* explosion = CCParticleExplosion::create();
+		explosion->setTexture(CCTextureCache::sharedTextureCache()->addImage("Assets/particle.png"));
+		explosion->setGravity(ccp(0.0f,-200.0f));
+		explosion->setLife(0.5f);
+		explosion->setLifeVar(0.5f);
+		explosion->setPosition(this->getPosition());
+		explosion->setEmissionRate(200.0f);
+		explosion->setAutoRemoveOnFinish(true);
+		this->getParent()->getParent()->addChild(explosion);
 	}
 
 
