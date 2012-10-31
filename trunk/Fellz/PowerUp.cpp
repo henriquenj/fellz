@@ -1,4 +1,5 @@
 #include "PowerUp.h"
+#include "MainGameScene.h"
 
 USING_NS_CC;
 
@@ -18,7 +19,10 @@ PowerUp* PowerUp::create(const char * file,b2World *world)
 
 PowerUp::~PowerUp()
 {
-
+	if (body != NULL)
+	{
+		world->DestroyBody(body);
+	}
 }
 
 void PowerUp::update(float dt)
@@ -27,6 +31,35 @@ void PowerUp::update(float dt)
 	// so just update based on physics simulation
 	this->setPosition(ccp(body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO));
 	this->setRotation(-1 * CC_RADIANS_TO_DEGREES(body->GetAngle()));
+
+	// check if is colliding with character
+	for (b2ContactEdge* edge = body->GetContactList();edge;edge = edge->next)
+	{
+		if (edge->contact->IsTouching())
+		{
+			// find which fixture is
+			b2Body* collidedBody;
+			if (edge->contact->GetFixtureA()->GetBody() == body)
+			{
+				collidedBody = edge->contact->GetFixtureB()->GetBody();
+			}
+			else
+			{
+				collidedBody = edge->contact->GetFixtureA()->GetBody();
+			}
+
+			// now proceed
+			if (((CCSprite*)collidedBody->GetUserData())->getTag() == CHARACTER_TAG)
+			{
+				((MainGameScene*)this->getParent())->GotPowerUp(this);
+				edge = NULL;
+				world->DestroyBody(body);
+				body = NULL;
+				this->unscheduleUpdate();
+				break;
+			}
+		}
+	}
 }
 
 PowerUp::PowerUp(b2World *world)

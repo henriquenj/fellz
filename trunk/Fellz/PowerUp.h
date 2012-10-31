@@ -7,6 +7,7 @@
 #include "cocos2d.h"
 #include "Box2D\Box2D.h"
 #include "ColorBlock.h"
+#include "Character.h"
 
 
 // defines that set each type of power up
