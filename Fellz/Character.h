@@ -16,7 +16,7 @@ class Character
 {
 public:
 	// must hold a pointer to the layer and the Box2D world
-	Character(cocos2d::CCLayer* layer, b2World* world,WarningSign* warning);
+	Character(cocos2d::CCLayer* layer, b2World* world);
 	~Character(void);
 	void Update(float dt);
 	inline b2Body* GetBody()const
@@ -32,7 +32,6 @@ private:
 	cocos2d::CCSprite* sprite;
 	b2Body* characterBody;
 	b2World* world;
-	WarningSign* warning;
 	
 };
 

@@ -33,8 +33,8 @@ public:
 
 	void update(float dt);
 
-	// function callback of createblocks timer
-	void CreateBlockCallback(float time);
+	// called by power up class to process this event
+	void GotPowerUp (PowerUp* up);
 
 	// Get character
 	inline const Character* GetCharcter()const
@@ -54,8 +54,12 @@ private:
 	// pointer to Box2D world
 	// hold all related Box2D stuff
 	b2World* box2DWorld;
-	// warning signal node
-	WarningSign* warning;
+
+	// function callback of createblocks timer
+	void CreateBlockCallback(float time);
+
+	// function callback for deleting a power up
+	void DeletePowerUpCallback(CCObject* up);
 
 };
 

@@ -2,7 +2,7 @@
 
 USING_NS_CC;
 
-Character::Character(cocos2d::CCLayer* layer,b2World* world,WarningSign* warning)
+Character::Character(cocos2d::CCLayer* layer,b2World* world)
 {
 	// copy references
 	this->layer = layer;
@@ -18,7 +18,7 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world,WarningSign* warning
 
 	// descriptor
 	b2BodyDef blockDef;
-	blockDef.type = b2_staticBody;	
+	blockDef.type = b2_dynamicBody;	
 	// divide by the PTM ratio
 	blockDef.position.Set(sprite->getPositionX() / PTM_RATIO, sprite->getPositionY() / PTM_RATIO);
 	// define that this CCSprite is linked with this body
@@ -29,18 +29,18 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world,WarningSign* warning
 	// now comes the shape
 	b2PolygonShape trunkShape;
 	// create shape based on the size of the sprite
-	trunkShape.SetAsBox((sprite->boundingBox().size.width / PTM_RATIO) / 4.6,(sprite->boundingBox().size.height / PTM_RATIO) / 2);
+	trunkShape.SetAsBox((sprite->boundingBox().size.width / PTM_RATIO) / 7,(sprite->boundingBox().size.height / PTM_RATIO) / 2.4);
 
 	// we gonna need to set the points on hand
 	b2Vec2 vertex[4];
-	vertex[0].x = -2;
-	vertex[0].y = 2;
-	vertex[1].x = -2;
+	vertex[0].x = -1.8;
+	vertex[0].y = 1.8;
+	vertex[1].x = -1.8;
 	vertex[1].y = 1;
-	vertex[2].x = 2;
+	vertex[2].x = 1.8;
 	vertex[2].y = 1;
-	vertex[3].x = 2;
-	vertex[3].y = 2;
+	vertex[3].x = 1.8;
+	vertex[3].y = 1.8;
 	// create other shape for arms
 	b2PolygonShape arm;
 	arm.Set(vertex,4);
@@ -63,8 +63,6 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world,WarningSign* warning
 	// add to body
 	characterBody->CreateFixture(&armFixture);
 	characterBody->CreateFixture(&trunkFixture);
-
-	this->warning = warning;
 }
 
 

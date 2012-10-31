@@ -81,11 +81,11 @@ bool MainGameScene::init()
 	// init world
 	box2DWorld = new b2World(b2Vec2(0.0f,0.0f));
 
-	warning = WarningSign::create(box2DWorld);
+	WarningSign* warning = WarningSign::create(box2DWorld);
 	this->addChild(warning,30);
 
 	// create character
-	mainCharacter = new Character(this,box2DWorld,warning);
+	mainCharacter = new Character(this,box2DWorld);
 
 	// create batch 
 	blocksBatch = CCSpriteBatchNode::batchNodeWithFile("Assets/block.png");
@@ -255,4 +255,18 @@ void MainGameScene::CreateBlockCallback(float time)
 	// add to local list
 	blocksList.push_back(newBlock);
 
+}
+
+void MainGameScene::GotPowerUp(PowerUp* up)
+{
+	// make the power up dissapear and then delete it
+	CCSequence* sequence = CCSequence::create(CCScaleBy::create(0.5f,0.0f,0.0f),
+				CCCallFuncO::create(this,callfuncO_selector(MainGameScene::DeletePowerUpCallback),up));
+	up->runAction(sequence);
+}
+
+void MainGameScene::DeletePowerUpCallback(CCObject* up)
+{
+	// delete power up from the layer
+	this->removeChild((CCNode*)up,true);
 }
