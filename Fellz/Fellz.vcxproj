@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppDelegate.cpp" />
+    <ClCompile Include="BlockSpecial.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ColorBlock.cpp" />
     <ClCompile Include="GLES-Render.cpp" />
@@ -96,11 +97,13 @@
     <ClCompile Include="PointsManager.cpp" />
     <ClCompile Include="PointsScene.cpp" />
     <ClCompile Include="PowerUp.cpp" />
+    <ClCompile Include="PowerUpBase.cpp" />
     <ClCompile Include="WaitingConnectionScene.cpp" />
     <ClCompile Include="WarningSign.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppDelegate.h" />
+    <ClInclude Include="BlockSpecial.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ColorBlock.h" />
     <ClInclude Include="GLES-Render.h" />
@@ -110,6 +113,7 @@
     <ClInclude Include="PointsManager.h" />
     <ClInclude Include="PointsScene.h" />
     <ClInclude Include="PowerUp.h" />
+    <ClInclude Include="PowerUpBase.h" />
     <ClInclude Include="WaitingConnectionScene.h" />
     <ClInclude Include="WarningSign.h" />
   </ItemGroup>

@@ -33,14 +33,14 @@ Character::Character(cocos2d::CCLayer* layer,b2World* world)
 
 	// we gonna need to set the points on hand
 	b2Vec2 vertex[4];
-	vertex[0].x = -1.8;
-	vertex[0].y = 1.8;
-	vertex[1].x = -1.8;
-	vertex[1].y = 1;
-	vertex[2].x = 1.8;
-	vertex[2].y = 1;
-	vertex[3].x = 1.8;
-	vertex[3].y = 1.8;
+	vertex[0].x = -1.8f;
+	vertex[0].y = 1.8f;
+	vertex[1].x = -1.8f;
+	vertex[1].y = 1.0f;
+	vertex[2].x = 1.8f;
+	vertex[2].y = 1.0f;
+	vertex[3].x = 1.8f;
+	vertex[3].y = 1.8f;
 	// create other shape for arms
 	b2PolygonShape arm;
 	arm.Set(vertex,4);

@@ -14,6 +14,7 @@
 #include "PointsManager.h"
 #include "GLES-Render.h"
 #include "PowerUp.h"
+#include "BlockSpecial.h"
 
 class MainGameScene : public cocos2d::CCLayer
 {
@@ -54,6 +55,9 @@ private:
 	// pointer to Box2D world
 	// hold all related Box2D stuff
 	b2World* box2DWorld;
+	// pointer to powerup implementation
+	// there can be only one at a time
+	PowerUpBase* powerup;
 
 	// function callback of createblocks timer
 	void CreateBlockCallback(float time);
