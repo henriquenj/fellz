@@ -13,6 +13,7 @@
 #define CC_KEY_DOWN          VK_DOWN
 #define CC_KEY_LEFT          VK_LEFT
 #define CC_KEY_RIGHT         VK_RIGHT
+#define CC_KEY_SPACE		 VK_SPACE
 
 #endif
 

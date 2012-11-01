@@ -49,6 +49,12 @@
     <ClCompile Include="WarningSign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PowerUpBase.cpp">
+      <Filter>PowerUps</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockSpecial.cpp">
+      <Filter>PowerUps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -86,6 +92,12 @@
     </ClInclude>
     <ClInclude Include="WarningSign.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUpBase.h">
+      <Filter>PowerUps</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockSpecial.h">
+      <Filter>PowerUps</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

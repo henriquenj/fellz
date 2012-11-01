@@ -60,6 +60,13 @@ void PowerUp::update(float dt)
 			}
 		}
 	}
+
+	if (getPositionY() > 650.0f || getPositionY() < -85.0f ||
+			getPositionX() < -20.0f || getPositionX() > 850.0f)
+	{
+		// delete block
+		this->removeFromParentAndCleanup(true);
+	}
 }
 
 PowerUp::PowerUp(b2World *world)

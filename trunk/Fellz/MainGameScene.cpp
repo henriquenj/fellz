@@ -95,6 +95,14 @@ bool MainGameScene::init()
 	pointsManager = PointsManager::create();
 	this->addChild(pointsManager);
 
+	// create power up panel
+	CCSprite* powerpanel = CCSprite::create("Assets/powerup_panel.png");
+	powerpanel->setPosition(ccp(730.0f,520.0f));
+	this->addChild(powerpanel);
+
+	// must init this with null
+	powerup = NULL;
+
 	// shows debug draw on debug builds
 #ifdef _DEBUG
 	// create de debug draw
@@ -269,4 +277,12 @@ void MainGameScene::DeletePowerUpCallback(CCObject* up)
 {
 	// delete power up from the layer
 	this->removeChild((CCNode*)up,true);
+	// add implementation
+	if (powerup != NULL)
+	{
+		this->removeChild(powerup,true);
+	}
+	
+	powerup = BlockSpecial::create(SPECIAL_RED);
+	this->addChild(powerup);
 }

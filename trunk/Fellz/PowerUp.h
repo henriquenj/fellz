@@ -14,6 +14,7 @@
 #define SPECIAL_RED 0
 
 // power up base class provide interface for the rest of power ups objects
+// it doens't make any gameplay change
 // take care of sprite drawning and collision detection 
 class PowerUp : public cocos2d::CCSprite
 {
