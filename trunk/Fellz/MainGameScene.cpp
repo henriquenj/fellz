@@ -271,6 +271,15 @@ void MainGameScene::GotPowerUp(PowerUp* up)
 	CCSequence* sequence = CCSequence::create(CCScaleBy::create(0.5f,0.0f,0.0f),
 				CCCallFuncO::create(this,callfuncO_selector(MainGameScene::DeletePowerUpCallback),up));
 	up->runAction(sequence);
+	if (powerup != NULL)
+	{
+		if (powerup->isActive()){return;}
+
+		this->removeChild(powerup,true);
+	}
+	
+	powerup = BlockSpecial::create(SPECIAL_RED);
+	this->addChild(powerup);
 }
 
 void MainGameScene::DeletePowerUpCallback(CCObject* up)
@@ -278,11 +287,4 @@ void MainGameScene::DeletePowerUpCallback(CCObject* up)
 	// delete power up from the layer
 	this->removeChild((CCNode*)up,true);
 	// add implementation
-	if (powerup != NULL)
-	{
-		this->removeChild(powerup,true);
-	}
-	
-	powerup = BlockSpecial::create(SPECIAL_RED);
-	this->addChild(powerup);
 }

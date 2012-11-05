@@ -2,6 +2,9 @@
 #define __BLOCK_SPECIAL__
 
 #include "PowerUpBase.h"
+#include "ColorBlock.h"
+#include "MainGameScene.h"
+#include "PointsManager.h"
 // block special execute the anihilation of the blocks
 class BlockSpecial : public PowerUpBase
 {
@@ -13,6 +16,8 @@ public:
 	// 'dealloc'
 	~BlockSpecial(void);
 private:
+	void DeleteBlockCallback(CCObject* block);
+
 	void Execute();
 	int kind;
 };

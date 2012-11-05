@@ -43,6 +43,11 @@ public:
 		return mainCharacter;
 	}
 	
+	inline std::list<ColorBlock*>* GetBlockList()
+	{
+		return &blocksList;
+	}
+	
 private:
 	// represents the main character
 	Character* mainCharacter;
