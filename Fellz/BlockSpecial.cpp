@@ -6,7 +6,11 @@ BlockSpecial::BlockSpecial(int kind) //: PowerUpBase()
 {
 	this->kind = kind;
 	// put sprite on power up zone
-	CCSprite* sprite = CCSprite::create("Assets/redSpecial.png");
+	CCSprite* sprite = CCSprite::create("Assets/BlockSpecial.png");
+	// put the proper color
+	if (kind == SPECIAL_BLUE){sprite->setColor(ccc3(0,0,255));}
+	else if (kind == SPECIAL_GREEN){sprite->setColor(ccc3(0,255,0));}
+	else if (kind == SPECIAL_RED){sprite->setColor(ccc3(255,0,0));}
 	sprite->setPosition(ccp(730.0f,520.0f));
 	
 	this->addChild(sprite);
@@ -29,7 +33,7 @@ void BlockSpecial::Execute()
 	std::list<ColorBlock*> *blocksList = ((MainGameScene*)this->getParent())->GetBlockList();
 
 	// schedule the deletation with a little bit of difference in time
-	float time = 0.2;
+	float time = 0.2f;
 
 	//iterate through the list
 	std::list<ColorBlock*>::iterator it;
@@ -40,10 +44,13 @@ void BlockSpecial::Execute()
 		{
 			CCSequence* sequence = CCSequence::create(CCDelayTime::create(time),CCCallFuncO::create(this,callfuncO_selector(BlockSpecial::DeleteBlockCallback),*it));
 			this->runAction(sequence);
-			time += 0.1;
-
+			time += 0.1f;
 		}
 	}
+
+	// schedule the powerup deletation when the processing have finished
+	CCSequence* deletation = CCSequence::create(CCDelayTime::create(time),CCCallFunc::create(this,callfunc_selector(PowerUpBase::DeletePowerUpCallback)));
+	this->runAction(deletation);
 }
 
 

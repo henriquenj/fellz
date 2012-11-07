@@ -1,4 +1,5 @@
 #include "PowerUpBase.h"
+#include "MainGameScene.h"
 
 USING_NS_CC;
 
@@ -11,6 +12,7 @@ PowerUpBase::PowerUpBase(void)
 
 PowerUpBase::~PowerUpBase(void)
 {
+	
 }
 
 void PowerUpBase::update(float dt)
@@ -22,4 +24,10 @@ void PowerUpBase::update(float dt)
 		this->Execute();
 		active = true;
 	}
+}
+
+void PowerUpBase::DeletePowerUpCallback()
+{
+	((MainGameScene*)this->getParent())->SetPoweUpToNull();
+	this->getParent()->removeChild(this,true);
 }
