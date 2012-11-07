@@ -47,6 +47,11 @@ public:
 	{
 		return &blocksList;
 	}
+	// called when the power up finishs its processing
+	inline void SetPoweUpToNull()
+	{
+		powerup = NULL;
+	}
 	
 private:
 	// represents the main character

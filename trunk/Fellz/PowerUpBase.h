@@ -22,6 +22,8 @@ public:
 	{
 		return active;
 	}
+	// to be used when the power up finish processing
+	void DeletePowerUpCallback();
 
 private:
 	// called when the user press space key

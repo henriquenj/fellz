@@ -69,7 +69,7 @@ bool MainGameScene::init()
 	this->addChild(infiniteBackground);
 
 	// pre load the power up assets
-	CCTextureCache::sharedTextureCache()->addImage("Assets/redSpecial.png");
+	CCTextureCache::sharedTextureCache()->addImage("Assets/BlockSpecial.png");
 	CCTextureCache::sharedTextureCache()->addImage("Assets/particle.png");
 
 	// put the update method to work
@@ -98,7 +98,7 @@ bool MainGameScene::init()
 	// create power up panel
 	CCSprite* powerpanel = CCSprite::create("Assets/powerup_panel.png");
 	powerpanel->setPosition(ccp(730.0f,520.0f));
-	this->addChild(powerpanel);
+	this->addChild(powerpanel,700);
 
 	// must init this with null
 	powerup = NULL;
@@ -278,13 +278,17 @@ void MainGameScene::GotPowerUp(PowerUp* up)
 		this->removeChild(powerup,true);
 	}
 	
-	powerup = BlockSpecial::create(SPECIAL_RED);
-	this->addChild(powerup);
+	// that means it's a block special
+	if (up->GetKind() < 3)
+	{
+		powerup = BlockSpecial::create(up->GetKind());
+	}
+	this->addChild(powerup,701);
 }
 
 void MainGameScene::DeletePowerUpCallback(CCObject* up)
 {
 	// delete power up from the layer
-	this->removeChild((CCNode*)up,true);
+	this->removeChild((PowerUp*)up,true);
 	// add implementation
 }

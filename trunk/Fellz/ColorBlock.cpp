@@ -128,7 +128,20 @@ void ColorBlock::Destroy()
 
 	if (hasPowerUp)
 	{
-		PowerUp* up = PowerUp::create("Assets/redSpecial.png",world);
+		PowerUp* up; 
+		// random kind of power up
+		short kind = rand() % 3;
+		// if it's from 0 to 2, it's a blockspecial
+		if (kind < 3)
+		{
+			up = PowerUp::create("Assets/BlockSpecial.png",world);
+			// blue
+			if (kind == SPECIAL_BLUE){up->setColor(ccc3(0,0,255));}
+			// green
+			else if (kind == SPECIAL_GREEN){up->setColor(ccc3(0,255,0));}
+			else if (kind == SPECIAL_RED){up->setColor(ccc3(255,0,0));}
+		}
+		up->SetKind(kind);
 		up->setPosition(this->getPosition());
 		this->getParent()->getParent()->addChild(up);
 
