@@ -39,11 +39,17 @@ PointsManager::~PointsManager()
 
 void PointsManager::AnihilationHappened(int numberOfBlocks, cocos2d::CCPoint spot)
 {
-	// those formulas are experimental, must take a closer look later
-	int multiplier = 1;
-	if (numberOfBlocks > 3)	{multiplier = numberOfBlocks / 2;}
 	// number of points that will be added depends upon the number of blocks that are being anihilated
-	int addpoints = 10 * (numberOfBlocks - 2) * multiplier;
+	int addpoints = 0;
+	// in case it's a power up
+	if (numberOfBlocks == 1) {addpoints = 2;}
+	// normal anihilation
+	else if (numberOfBlocks == 3){addpoints = 10;}
+	// 4-block anihilation
+	else if (numberOfBlocks == 4){addpoints = 30;}
+	// bigger anihiltion
+	else if (numberOfBlocks == 5){addpoints = 60;}
+	
 	points += addpoints;
 	// update number of points
 	pointsToDisplay.initWithFormat("%i",points);

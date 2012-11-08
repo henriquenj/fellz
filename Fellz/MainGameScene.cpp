@@ -68,9 +68,10 @@ bool MainGameScene::init()
 	infiniteBackground->setScale(0.8f);
 	this->addChild(infiniteBackground);
 
-	// pre load the power up assets
+	// pre load some assets
 	CCTextureCache::sharedTextureCache()->addImage("Assets/BlockSpecial.png");
 	CCTextureCache::sharedTextureCache()->addImage("Assets/particle.png");
+	CCTextureCache::sharedTextureCache()->addImage("Assets/fire.png");
 
 	// put the update method to work
 	this->scheduleUpdate();
@@ -93,7 +94,7 @@ bool MainGameScene::init()
 
 	// define pointsmanager
 	pointsManager = PointsManager::create();
-	this->addChild(pointsManager);
+	this->addChild(pointsManager,500);
 
 	// create power up panel
 	CCSprite* powerpanel = CCSprite::create("Assets/powerup_panel.png");

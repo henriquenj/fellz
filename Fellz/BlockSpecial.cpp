@@ -59,8 +59,19 @@ void BlockSpecial::DeleteBlockCallback(CCObject* block)
 	if (!((ColorBlock*)block)->GetDying())
 	{
 		// draw points
-		pointsManager->AnihilationHappened(2,((ColorBlock*)block)->getPosition());
+		pointsManager->AnihilationHappened(1,((ColorBlock*)block)->getPosition());
 		// destroy block
 		((ColorBlock*)block)->Destroy();
+		// put some particles
+		// get to the mains game scene
+		MainGameScene* mainScene = (MainGameScene*)pointsManager->getParent();
+		// create particle system
+		CCParticleSystem* system = CCParticleFire::create();
+		system->setTexture(CCTextureCache::sharedTextureCache()->addImage("Assets/fire.png"));
+		system->setAutoRemoveOnFinish(true);
+		system->setPosition(((ColorBlock*)block)->getPosition());
+		system->setDuration(0.3f);
+		system->setLife(0.5f);
+		mainScene->addChild(system);
 	}
 }
