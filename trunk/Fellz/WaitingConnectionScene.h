@@ -21,7 +21,6 @@ public:
 	// jump menu item callback
 	void JumpCallback(CCObject* pSender);
 
-
 	 // implement the "static node()" method manually
 	LAYER_CREATE_FUNC(WaitingConnectionScene);
 };

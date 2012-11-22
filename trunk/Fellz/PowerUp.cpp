@@ -51,12 +51,27 @@ void PowerUp::update(float dt)
 			// now proceed
 			if (((CCSprite*)collidedBody->GetUserData())->getTag() == CHARACTER_TAG)
 			{
-				((MainGameScene*)this->getParent())->GotPowerUp(this);
-				edge = NULL;
-				world->DestroyBody(body);
-				body = NULL;
-				this->unscheduleUpdate();
-				break;
+				// must check if there's already a power up
+				// and if there is, check if it's not active
+				bool canProceed = false;
+				if (((MainGameScene*)this->getParent())->GetPowerUp() != NULL)
+				{
+					if (!((MainGameScene*)this->getParent())->GetPowerUp()->isActive())
+					{
+						canProceed = true;
+					}
+				}
+				else {canProceed = true;}
+				// NOW we proceed
+				if (canProceed == true)
+				{
+					((MainGameScene*)this->getParent())->GotPowerUp(this);
+					edge = NULL;
+					world->DestroyBody(body);
+					body = NULL;
+					this->unscheduleUpdate();
+					break;
+				}
 			}
 		}
 	}

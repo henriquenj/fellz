@@ -320,7 +320,6 @@ void ColorBlock::BuildConnections(const ColorBlock* caller,const int blockType)
 					}
 				}
 			}
-			
 			edge = edge->next;
 		}
 	}

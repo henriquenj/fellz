@@ -36,7 +36,7 @@ private:
 
 	// local reference
 	b2World* world;
-	// 4 bodies to age as sensors
+	// 4 bodies to act as sensors
 	b2Body *left_b, *top_b, *right_b, *bot_b;
 };
 
