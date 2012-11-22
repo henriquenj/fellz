@@ -33,6 +33,12 @@ bool WaitingConnectionScene::init()
 		return false;
 	}
 
+	//#define MAX_CLIENTS 30
+	//#define SERVER_PORT 6000
+	//RakNet::RakPeerInterface *peer = RakNet::RakPeerInterface::GetInstance();
+	//RakNet::SocketDescriptor sd(SERVER_PORT,0);
+	//peer->Startup(MAX_CLIENTS, &sd, 1);
+
 	// get instance for director
 	CCDirector* director = CCDirector::sharedDirector();
 	CCSize windowSize = director->getWinSize();
