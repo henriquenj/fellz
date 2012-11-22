@@ -52,6 +52,11 @@ public:
 	{
 		powerup = NULL;
 	}
+	// Get power up object
+	inline PowerUpBase* GetPowerUp()const
+	{
+		return powerup;
+	}
 	
 private:
 	// represents the main character

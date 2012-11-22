@@ -274,8 +274,6 @@ void MainGameScene::GotPowerUp(PowerUp* up)
 	up->runAction(sequence);
 	if (powerup != NULL)
 	{
-		if (powerup->isActive()){return;}
-
 		this->removeChild(powerup,true);
 	}
 	
@@ -291,5 +289,5 @@ void MainGameScene::DeletePowerUpCallback(CCObject* up)
 {
 	// delete power up from the layer
 	this->removeChild((PowerUp*)up,true);
-	// add implementation
 }
+
