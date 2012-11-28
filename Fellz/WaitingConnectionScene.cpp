@@ -22,7 +22,8 @@ CCScene* WaitingConnectionScene::scene()
 
 WaitingConnectionScene::~WaitingConnectionScene()
 {
-	
+	// destroy raknet object
+	RakNet::RakPeerInterface::DestroyInstance(player2);
 }
 
 bool WaitingConnectionScene::init()
@@ -33,11 +34,20 @@ bool WaitingConnectionScene::init()
 		return false;
 	}
 
-	//#define MAX_CLIENTS 30
-	//#define SERVER_PORT 6000
-	//RakNet::RakPeerInterface *peer = RakNet::RakPeerInterface::GetInstance();
-	//RakNet::SocketDescriptor sd(SERVER_PORT,0);
-	//peer->Startup(MAX_CLIENTS, &sd, 1);
+	// create instance here using global pointer
+	player2 = RakNet::RakPeerInterface::GetInstance();
+	RakNet::SocketDescriptor sd(SERVER_PORT,0);
+	player2->Startup(1, &sd, 1);
+
+	// by default, this is true
+	isServer = true;
+	// first, attempts to connect with the other player
+	// only localhost for now
+	if (player2->Connect("localhost",SERVER_PORT,0,0) == RakNet::CONNECTION_ATTEMPT_STARTED)
+	{
+		// ok, there's another player, go on
+		isServer = false;
+	}
 
 	// get instance for director
 	CCDirector* director = CCDirector::sharedDirector();

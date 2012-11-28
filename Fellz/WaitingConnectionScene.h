@@ -5,7 +5,7 @@
 #include "cocos2d.h"
 
 #include "MainGameScene.h"
-#include "RakPeerInterface.h"
+#include "RaknetGlobals.h"
 // this scene just keeps checking if the other player is ready to play, like a lobby
 class WaitingConnectionScene : public cocos2d::CCLayer
 {
@@ -25,7 +25,6 @@ public:
 	 // implement the "static node()" method manually
 	LAYER_CREATE_FUNC(WaitingConnectionScene);
 };
-
 
 #endif // __WAITING_CONNECTION_SCENE__
 

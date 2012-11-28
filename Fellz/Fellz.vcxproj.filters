@@ -55,6 +55,9 @@
     <ClCompile Include="BlockSpecial.cpp">
       <Filter>PowerUps</Filter>
     </ClCompile>
+    <ClCompile Include="RaknetGlobals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -98,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="BlockSpecial.h">
       <Filter>PowerUps</Filter>
+    </ClInclude>
+    <ClInclude Include="RaknetGlobals.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -98,6 +98,7 @@
     <ClCompile Include="PointsScene.cpp" />
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="PowerUpBase.cpp" />
+    <ClCompile Include="RaknetGlobals.cpp" />
     <ClCompile Include="WaitingConnectionScene.cpp" />
     <ClCompile Include="WarningSign.cpp" />
   </ItemGroup>
@@ -114,6 +115,7 @@
     <ClInclude Include="PointsScene.h" />
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="PowerUpBase.h" />
+    <ClInclude Include="RaknetGlobals.h" />
     <ClInclude Include="WaitingConnectionScene.h" />
     <ClInclude Include="WarningSign.h" />
   </ItemGroup>
