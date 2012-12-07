@@ -35,18 +35,45 @@ bool WaitingConnectionScene::init()
 	}
 
 	// create instance here using global pointer
+
+	// create instance of a client and try to connect
 	player2 = RakNet::RakPeerInterface::GetInstance();
-	RakNet::SocketDescriptor sd(SERVER_PORT,0);
+	RakNet::SocketDescriptor sd(CLIENT_PORT,0);
 	player2->Startup(1, &sd, 1);
+	RakNet::Packet* packet;
 
 	// by default, this is true
 	isServer = true;
+	bool connected = false;
+	bool isFellz = false;
 	// first, attempts to connect with the other player
 	// only localhost for now
 	if (player2->Connect("localhost",SERVER_PORT,0,0) == RakNet::CONNECTION_ATTEMPT_STARTED)
 	{
-		// ok, there's another player, go on
-		isServer = false;
+		for (packet = player2->Receive();packet;player2->DeallocatePacket(packet),packet=player2->Receive())
+		{
+			if(packet->data[0] == ID_CONNECTION_REQUEST_ACCEPTED)
+			{
+				connected = true;
+			}
+			else if (packet->data[0] == ID_GAME_MESSAGE_1 && connected)
+			{
+				isFellz = true;
+				isServer = false;
+			}
+		}
+	}
+
+	// if didn't find anything, create a server peer
+	if (isServer)
+	{
+		//first delete old one
+		RakNet::RakPeerInterface::DestroyInstance(player2);
+		//create a new
+		player2 = RakNet::RakPeerInterface::GetInstance();
+		RakNet::SocketDescriptor sd_server(SERVER_PORT,0);
+		player2->Startup(10,&sd_server,1);
+		// now the update method will do the rest
 	}
 
 	// get instance for director
@@ -66,9 +93,40 @@ bool WaitingConnectionScene::init()
 
 	//init random seed
 	srand(time(0));
-	
+
+	// put update method to work
+	this->scheduleUpdate();
 	
 	return true;
+}
+
+
+void WaitingConnectionScene::update(float dt)
+{
+	bool connected = false;
+	bool isFellz = false;
+	// keep checking for incomming connections
+	if (isServer)
+	{
+		RakNet::Packet* packet;
+		for (packet = player2->Receive();packet;player2->DeallocatePacket(packet),packet=player2->Receive())
+		{
+			if (packet->data[0] == ID_CONNECTION_REQUEST_ACCEPTED)
+			{
+				// ok, someone answered
+				// let's see who is it
+				//reply
+				RakNet::BitStream bsOut;
+				bsOut.Write((RakNet::MessageID)ID_GAME_MESSAGE_1);
+				player2->Send(&bsOut,HIGH_PRIORITY,RELIABLE_ORDERED,0,packet->systemAddress,false);
+				connected = true;
+			}
+			else if (packet->data[0] == ID_GAME_MESSAGE_1 && connected)
+			{
+				isFellz = true;
+			}
+		}
+	}
 }
 
 void WaitingConnectionScene::JumpCallback(CCObject* pSender)
