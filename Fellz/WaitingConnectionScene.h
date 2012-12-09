@@ -27,6 +27,10 @@ public:
 
 	 // implement the "static node()" method manually
 	LAYER_CREATE_FUNC(WaitingConnectionScene);
+
+private:
+	// emits a warning when there's a connected peer
+	cocos2d::CCLabelBMFont* connectedSign;
 };
 
 #endif // __WAITING_CONNECTION_SCENE__
