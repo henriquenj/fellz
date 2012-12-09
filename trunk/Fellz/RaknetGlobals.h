@@ -14,11 +14,15 @@
 
 // main interface
 extern RakNet::RakPeerInterface* player2;
+// remote adrress struct used by raknet
+extern RakNet::SystemAddress player2Adress;
 extern bool isServer;
+extern bool isConnected;
 
 enum GameMessages
 {
-	ID_GAME_MESSAGE_1=ID_USER_PACKET_ENUM+1
+	ID_GAME_MESSAGE_1=ID_USER_PACKET_ENUM+1,
+	ID_GAME_START // signal to make the player2 start the game
 };
 
 #endif // __RAKNET_GLOBALS__
