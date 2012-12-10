@@ -23,13 +23,13 @@ ChangeScreenSpecial::~ChangeScreenSpecial(void)
 
 void ChangeScreenSpecial::Execute()
 {
-	active = false;
+	bool active_t = false;
 	// only perform the swap if it's connected AND the other game is still running
 	if (isConnected)
 	{
 		if (!otherGameOver)
 		{
-			active = true;
+			active_t = true;
 			// send signal to other application
 			RakNet::BitStream bsOut;
 			bsOut.Write((RakNet::MessageID)ID_GAME_INIT_SWAP);
@@ -39,7 +39,7 @@ void ChangeScreenSpecial::Execute()
 		}
 	}
 
-	if (!active)
+	if (!active_t)
 	{
 		// delete from maingamescene
 		this->DeletePowerUpCallback();
