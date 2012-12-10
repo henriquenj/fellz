@@ -22,7 +22,7 @@ CCScene* WaitingConnectionScene::scene()
 
 WaitingConnectionScene::~WaitingConnectionScene()
 {
-	// destroy raknet object
+	player2->Shutdown(100);
 	RakNet::RakPeerInterface::DestroyInstance(player2);
 }
 
@@ -46,19 +46,19 @@ bool WaitingConnectionScene::init()
 	RakNet::Packet* packet;
 	// by default, this is true
 	isServer = true;
-	bool connected = false;
-	// first, attempts to connect with the other player
-	// only localhost for now
-	if (player2->Connect("localhost",SERVER_PORT,0,0) == RakNet::CONNECTION_ATTEMPT_STARTED)
+
+	//start broadcast
+	if (player2->Ping("255.255.255.255",SERVER_PORT,false))
 	{
 		Sleep(500);
 		for (packet = player2->Receive();packet;player2->DeallocatePacket(packet),packet=player2->Receive())
 		{
 			//DefaultMessageIDTypes i = (DefaultMessageIDTypes)packet->data[0];
-			if(packet->data[0] == ID_CONNECTION_REQUEST_ACCEPTED)
+			if (packet->data[0] == ID_UNCONNECTED_PONG)
 			{
-				Sleep(500);
-				connected = true;
+				//try to connect
+				player2->Connect(packet->systemAddress.ToString(false),SERVER_PORT,0,0);
+				Sleep(200);
 			}
 			else if (packet->data[0] == ID_GAME_MESSAGE_1)
 			{
@@ -91,6 +91,8 @@ bool WaitingConnectionScene::init()
 		connectedSign->setColor(ccc3(255,0,0));
 		connectedSign->setString("No Player Connected");
 	}
+
+	player2->SetTimeoutTime(3000,RakNet::UNASSIGNED_SYSTEM_ADDRESS);
 
 	// get instance for director
 	CCDirector* director = CCDirector::sharedDirector();
@@ -154,6 +156,15 @@ void WaitingConnectionScene::update(float dt)
 		{
 			// start game
 			CCDirector::sharedDirector()->pushScene(CCTransitionProgressOutIn::transitionWithDuration(1.0f,MainGameScene::scene()));
+		}
+		// player disconnected
+		else if (packet->data[0] == ID_DISCONNECTION_NOTIFICATION || 
+				packet->data[0] == ID_CONNECTION_LOST)
+		{
+			// change warning
+			connectedSign->setColor(ccc3(255,0,0));
+			connectedSign->setString("No Player Connected");
+			isConnected = false;
 		}
 	}
 
