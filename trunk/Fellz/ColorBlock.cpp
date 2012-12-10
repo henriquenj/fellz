@@ -130,7 +130,7 @@ void ColorBlock::Destroy()
 	{
 		PowerUp* up; 
 		// random kind of power up
-		short kind = rand() % 3;
+		short kind = rand() % 4;
 		// if it's from 0 to 2, it's a blockspecial
 		if (kind < 3)
 		{
@@ -140,6 +140,10 @@ void ColorBlock::Destroy()
 			// green
 			else if (kind == SPECIAL_GREEN){up->setColor(ccc3(0,255,0));}
 			else if (kind == SPECIAL_RED){up->setColor(ccc3(255,0,0));}
+		}
+		else if(kind == SPECIAL_CHANGE_SCREEN)
+		{
+			up = PowerUp::create("Assets/change_special.png",world);
 		}
 		up->SetKind(kind);
 		up->setPosition(this->getPosition());

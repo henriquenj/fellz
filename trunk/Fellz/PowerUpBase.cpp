@@ -21,8 +21,8 @@ void PowerUpBase::update(float dt)
 	if (KeyboardInput::GetKey(CC_KEY_SPACE))
 	{
 		// executes the power up code
-		this->Execute();
 		active = true;
+		this->Execute();
 	}
 }
 
