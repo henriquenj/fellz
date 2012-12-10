@@ -75,6 +75,7 @@ bool MainGameScene::init()
 	CCTextureCache::sharedTextureCache()->addImage("Assets/particle.png");
 	CCTextureCache::sharedTextureCache()->addImage("Assets/fire.png");
 	CCTextureCache::sharedTextureCache()->addImage("Assets/change_special.png");
+	CCTextureCache::sharedTextureCache()->addImage("Assets/transition.png");
 
 	// put the update method to work
 	this->scheduleUpdate();
@@ -109,7 +110,7 @@ bool MainGameScene::init()
 
 	// shows debug draw on debug builds
 #ifdef _DEBUG
-	// create de debug draw
+	 //create de debug draw
 	//Box2DDebugDraw* debugDraw = Box2DDebugDraw::create(box2DWorld);
 	//this->addChild(debugDraw,1000);
 #endif // _DEBUG	
@@ -283,10 +284,16 @@ void MainGameScene::update(float dt)
 					bsIn.Read((char*)&rs,sizeof(int));
 					pointsManager->SetP2Points(rs);
 				}
+				else if(packet->data[0] == ID_GAME_INIT_SWAP)
+				{
+					// other player will swap, prepare
+					ChangeScreenSpecial* change = ChangeScreenSpecial::create();
+					change->ExecuteActual();
+					this->addChild(change,701);
+				}
 			}
 		}
 	}
-
 }
 
 void MainGameScene::CreateBlockCallback(float time)

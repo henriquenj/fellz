@@ -7,6 +7,7 @@
 #include "Box2D\Box2D.h"
 #include "PointsManager.h"
 #include "PowerUp.h"
+#include "ChangeScreenSpecial.h"
 
 // pixels per meter
 #define PTM_RATIO 32
@@ -76,6 +77,8 @@ private:
 	static std::list<ColorBlock*> blocksToBeDeleted;
 	// this bool controls if a given block has a power up inside
 	bool hasPowerUp;
+
+	friend class ChangeScreenSpecial;
 };
 
 

@@ -84,9 +84,6 @@
     <ClInclude Include="Character.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="PointsScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="PointsManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -110,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="ChangeScreenSpecial.h">
       <Filter>PowerUps</Filter>
+    </ClInclude>
+    <ClInclude Include="PointsScene.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
