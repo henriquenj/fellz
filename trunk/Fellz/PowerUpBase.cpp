@@ -18,7 +18,7 @@ PowerUpBase::~PowerUpBase(void)
 void PowerUpBase::update(float dt)
 {
 	// check if the user pressed the space button
-	if (KeyboardInput::GetKey(CC_KEY_SPACE))
+	if (KeyboardInput::GetKey(CC_KEY_SPACE) && !active)
 	{
 		// executes the power up code
 		active = true;

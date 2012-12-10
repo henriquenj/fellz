@@ -109,7 +109,7 @@ void ColorBlock::InitInWorld(b2World* world)
 		this->setColor(ccc3(255,0,0));
 		break;
 	}
-}
+	}
 
 ColorBlock::~ColorBlock(void)
 {
