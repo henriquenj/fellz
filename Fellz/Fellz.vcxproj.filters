@@ -58,6 +58,9 @@
     <ClCompile Include="RaknetGlobals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChangeScreenSpecial.cpp">
+      <Filter>PowerUps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -104,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="RaknetGlobals.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeScreenSpecial.h">
+      <Filter>PowerUps</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

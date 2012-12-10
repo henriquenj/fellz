@@ -16,6 +16,7 @@
 #include "PowerUp.h"
 #include "BlockSpecial.h"
 #include "RaknetGlobals.h"
+#include "ChangeScreenSpecial.h"
 
 class MainGameScene : public cocos2d::CCLayer
 {
@@ -81,6 +82,7 @@ private:
 	// function callback for deleting a power up
 	void DeletePowerUpCallback(CCObject* up);
 
+	friend class ChangeScreenSpecial;
 };
 
 

@@ -14,6 +14,7 @@
 #define SPECIAL_RED 0
 #define SPECIAL_BLUE 1
 #define SPECIAL_GREEN 2
+#define SPECIAL_CHANGE_SCREEN 3
 
 // power up base class provide interface for the rest of power ups objects
 // it doens't make any gameplay change

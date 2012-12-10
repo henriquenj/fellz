@@ -74,6 +74,7 @@ bool MainGameScene::init()
 	CCTextureCache::sharedTextureCache()->addImage("Assets/BlockSpecial.png");
 	CCTextureCache::sharedTextureCache()->addImage("Assets/particle.png");
 	CCTextureCache::sharedTextureCache()->addImage("Assets/fire.png");
+	CCTextureCache::sharedTextureCache()->addImage("Assets/change_special.png");
 
 	// put the update method to work
 	this->scheduleUpdate();
@@ -326,6 +327,11 @@ void MainGameScene::GotPowerUp(PowerUp* up)
 	if (up->GetKind() < 3)
 	{
 		powerup = BlockSpecial::create(up->GetKind());
+	}
+	// change screen special
+	else if (up->GetKind() == SPECIAL_CHANGE_SCREEN)
+	{
+		powerup = ChangeScreenSpecial::create();
 	}
 	this->addChild(powerup,701);
 }
