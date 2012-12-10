@@ -15,8 +15,8 @@ PointsManager* PointsManager::create(void)
 
 PointsManager::PointsManager()
 {
-	points = 0; // player start with 0 points
-
+	points = 0; // players start with 0 points
+	points2 = 0;
 	// setup label
 	pointsLabel = CCLabelBMFont::create("0","Assets/badab.fnt");
 	pointsLabel->setPositionX(760.0f);
@@ -71,6 +71,15 @@ void PointsManager::AnihilationHappened(int numberOfBlocks, cocos2d::CCPoint spo
 	flyingNumber->runAction(sequence);
 	flyingNumber->runAction(CCMoveBy::actionWithDuration(2.0f,ccp(0.0f,120.0f)));
 	this->addChild(flyingNumber);
+
+	if (isConnected)
+	{
+		// send update points to other player
+		RakNet::BitStream BsOut;
+		BsOut.Write((RakNet::MessageID)ID_GAME_NEW_POINTS);
+		BsOut.Write((const char*)&points,sizeof(int));
+		player2->Send(&BsOut,HIGH_PRIORITY,RELIABLE_ORDERED,0,player2Adress,false);
+	}
 }
 
 void PointsManager::DeleteTextCallback(cocos2d::CCObject* object)

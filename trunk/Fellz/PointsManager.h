@@ -4,6 +4,7 @@
 #define __POINTS_MANAGER__
 
 #include "cocos2d.h"
+#include "RaknetGlobals.h"
 
 // points manager class take of everything inside the points managment, it's a child of MainGameScene
 // and also a global variable
@@ -27,9 +28,20 @@ public:
 	{
 		return points;
 	}
+	// Get player2 points
+	inline const int GetP2Points()const
+	{
+		return points2;
+	}
+	inline void SetP2Points(int newPoints)
+	{
+		points2 = newPoints;
+	}
 private:
 	// player points
 	int points;
+	// player 2 points
+	int points2;
 	cocos2d::CCString pointsToDisplay;// to be displayed on screen
 	// label that show the points on the top right corner
 	cocos2d::CCLabelBMFont* pointsLabel;

@@ -37,6 +37,8 @@ bool MainGameScene::init()
 		return false;
 	}
 
+	otherGameOver = false;
+
 	// init infinite background sprite object
 	infiniteBackground = CCSprite::create();
 	infiniteBackground->setPosition(ccp(400.0f,200.0f));
@@ -205,6 +207,13 @@ void MainGameScene::update(float dt)
 					if ((*it)->getPositionX() < 0.0f || (*it)->getPositionX() > 800.0f || 
 						(*it)->getPositionY() > 600.0f || (*it)->getPositionY() < 0.0f)
 					{
+						if (isConnected)
+						{
+							//send gameover signal through network
+							RakNet::BitStream BsOut;
+							BsOut.Write((RakNet::MessageID)ID_GAME_PLAYER_LOST);
+							player2->Send(&BsOut,HIGH_PRIORITY,RELIABLE_ORDERED,0,player2Adress,false);
+						}
 						// game over animation goes here
 						// for now just call the next scene
 						//CCDirector::sharedDirector()->replaceScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));
@@ -241,6 +250,42 @@ void MainGameScene::update(float dt)
 
 	// update physics engine
 	box2DWorld->Step(dt,20,20);
+	
+
+	// update raknet
+	if (isConnected)
+	{
+		// receive packets
+		RakNet::Packet* packet;
+		for (packet = player2->Receive();packet;player2->DeallocatePacket(packet),packet=player2->Receive())
+		{
+			// only process a packet that came from the other player
+			if (packet->systemAddress == player2Adress)
+			{
+				// player disconnected
+				if (packet->data[0] == ID_DISCONNECTION_NOTIFICATION || 
+					packet->data[0] == ID_CONNECTION_LOST)
+				{
+					isConnected = false;
+				}
+				// other player just lost
+				else if (packet->data[0] == ID_GAME_PLAYER_LOST)
+				{
+					otherGameOver = true;
+				}
+				else if (packet->data[0] == ID_GAME_NEW_POINTS)
+				{
+					// read new points from the other player
+					int rs = 0;
+					RakNet::BitStream bsIn(packet->data,packet->length,false);
+					bsIn.IgnoreBytes(sizeof(RakNet::MessageID));
+					bsIn.Read((char*)&rs,sizeof(int));
+					pointsManager->SetP2Points(rs);
+				}
+			}
+		}
+	}
+
 }
 
 void MainGameScene::CreateBlockCallback(float time)

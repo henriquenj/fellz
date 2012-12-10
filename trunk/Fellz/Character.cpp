@@ -135,6 +135,13 @@ void Character::Update(float dt)
 	if (sprite->getPositionX() < 60.0f || sprite->getPositionX() > 740.0f || 
 		sprite->getPositionY() > 530.0f || sprite->getPositionY() < 70.0f)
 	{
+		if (isConnected)
+		{
+			//send gameover signal through network
+			RakNet::BitStream BsOut;
+			BsOut.Write((RakNet::MessageID)ID_GAME_PLAYER_LOST);
+			player2->Send(&BsOut,HIGH_PRIORITY,RELIABLE_ORDERED,0,player2Adress,false);
+		}
 		// game over animation goes here
 		// for now just call the next scene
 		CCDirector::sharedDirector()->pushScene(CCTransitionProgressHorizontal::transitionWithDuration(1.0f,PointsScene::scene()));

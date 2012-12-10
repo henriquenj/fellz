@@ -20,11 +20,15 @@ public:
 	// implement the "static node()" method manually
 	LAYER_CREATE_FUNC(PointsScene);
 
+	// called each frame
+	void update(float dt);
+
 	// points increase callback
 	void PointsIncreaseCallback(cocos2d::CCObject* obj);
 
 private:
 	int animationValue;
+	cocos2d::CCLabelBMFont* player2Points;
 
 };
 

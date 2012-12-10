@@ -15,6 +15,7 @@
 #include "GLES-Render.h"
 #include "PowerUp.h"
 #include "BlockSpecial.h"
+#include "RaknetGlobals.h"
 
 class MainGameScene : public cocos2d::CCLayer
 {
