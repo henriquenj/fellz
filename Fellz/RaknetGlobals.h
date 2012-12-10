@@ -27,7 +27,10 @@ enum GameMessages
 	ID_GAME_START, // signal to make the player2 start the game
 	ID_GAME_CHANGE_SCENARIO, // signal to make the players swap scenarios
 	ID_GAME_PLAYER_LOST, // signal to warn that the player lost
-	ID_GAME_NEW_POINTS // signal to send the new amount of points
+	ID_GAME_NEW_POINTS, // signal to send the new amount of points
+	ID_GAME_INIT_SWAP, // signal to warn the other application to prepare for screen swap
+	ID_GAME_SWAP_SCREENS // signal to make the games swap screens
+
 };
 
 #endif // __RAKNET_GLOBALS__
