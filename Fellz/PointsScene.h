@@ -23,12 +23,16 @@ public:
 	// called each frame
 	void update(float dt);
 
-	// points increase callback
-	void PointsIncreaseCallback(cocos2d::CCObject* obj);
-
 private:
 	int animationValue;
+	bool textsArePlaced; // true when the texts are already on the screen
+	cocos2d::CCSequence* sequence2; // wee need this at gobal scope
 	cocos2d::CCLabelBMFont* player2Points;
+
+	void CreateFireworksCallback(float dt);
+	
+	// points increase callback
+	void PointsIncreaseCallback(cocos2d::CCObject* obj);
 
 };
 

@@ -82,6 +82,9 @@ private:
 	// function callback for deleting a power up
 	void DeletePowerUpCallback(CCObject* up);
 
+	// function callback for deleting the player disconnection sign
+	void DeleteDisctionnectionWarning(CCObject* warning);
+
 	friend class ChangeScreenSpecial;
 };
 

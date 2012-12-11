@@ -38,10 +38,6 @@ private:
 	void Execute();
 	void ExecuteTransferCallback();
 	void Send(RakNet::BitStream *bsOut);
-	void Receive();
-
-	// received information
-	std::vector<BlockInformation> received;
 };	
 
 #endif //__CHANGE_SCREEN_SPECIAL__

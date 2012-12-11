@@ -253,7 +253,6 @@ void MainGameScene::update(float dt)
 	// update physics engine
 	box2DWorld->Step(dt,20,20);
 	
-
 	// update raknet
 	if (isConnected)
 	{
@@ -269,6 +268,16 @@ void MainGameScene::update(float dt)
 					packet->data[0] == ID_CONNECTION_LOST)
 				{
 					isConnected = false;
+					// put some warning on the screen
+					//create a text and make it goes up
+					CCLabelBMFont* discWarning = CCLabelBMFont::create("Your opponent just disconnected","Assets/badab.fnt");
+					discWarning->setColor(ccc3(255,0,0));
+					discWarning->setPosition(ccp(400.0f,-20.0f));
+					CCSequence* warningSequence = CCSequence::create(CCMoveTo::create(4.0f,ccp(400.0f,200.0f)),
+						CCCallFuncO::create(this,callfuncO_selector(MainGameScene::DeleteDisctionnectionWarning),discWarning));
+					discWarning->runAction(warningSequence);
+					discWarning->runAction(CCFadeOut::create(4.0f));//fade
+					this->addChild(discWarning,1000);
 				}
 				// other player just lost
 				else if (packet->data[0] == ID_GAME_PLAYER_LOST)
@@ -288,8 +297,77 @@ void MainGameScene::update(float dt)
 				{
 					// other player will swap, prepare
 					ChangeScreenSpecial* change = ChangeScreenSpecial::create();
-					change->ExecuteActual();
 					this->addChild(change,701);
+					change->ExecuteActual();
+					change->setTag(978);
+				}
+				else if(packet->data[0] == ID_GAME_SWAP_SCREENS)
+				{
+					// received information
+					std::vector<BlockInformation> received;
+					RakNet::BitStream bsIn(packet->data,packet->length,false);
+					bsIn.IgnoreBytes(sizeof(RakNet::MessageID));
+					// number of blocks within the package
+					int size = 0;
+					bsIn.Read((char*)&size,sizeof(int));
+					BlockInformation* reci = new BlockInformation[size];
+					bsIn.Read((char*)reci,sizeof(BlockInformation) * size);
+					// put on the received vector
+					for (int p = 0; p < size; p++)
+					{
+						received.push_back(reci[p]);
+					}
+					delete reci;
+					// now change the blocks
+					//delete all non-dying blocks
+					std::list<ColorBlock*>::iterator it;
+					std::vector<ColorBlock*> toDelete;
+					for (it = blocksList.begin(); it != blocksList.end(); it++)
+					{
+						if (!(*it)->GetDying())
+						{
+							toDelete.push_back(*it);
+						}
+					}
+					//delete them
+					for (int c = 0; c < toDelete.size();c++)
+					{
+						blocksBatch->removeChild(toDelete[c],true);
+						blocksList.remove(toDelete[c]);
+					}
+					//put them back
+
+					for (int c = 0; c < received.size(); c++)
+					{
+						// create block on a random location
+						ColorBlock* newBlock = ColorBlock::create("Assets/block.png");
+						// unattached blocks have 50% opacity
+						newBlock->setOpacity(127);
+
+						newBlock->setPositionX(received[c].posX);
+						newBlock->setPositionY(received[c].posY);
+
+						// add as a child to the batch
+						blocksBatch->addChild(newBlock);
+						//mainScene->addChild(newBlock);
+
+						newBlock->InitInWorld(box2DWorld);
+
+						if (received[c].color == BLOCK_GREEN)
+						{
+							newBlock->setColor(ccc3(0,255,0));
+						}
+						else if (received[c].color == BLOCK_RED)
+						{
+							newBlock->setColor(ccc3(255,0,0));
+						}
+						else if (received[c].color == BLOCK_BLUE)
+						{
+							newBlock->setColor(ccc3(0,0,255));
+						}
+						// add to local list
+						blocksList.push_back(newBlock);
+					}
 				}
 			}
 		}
@@ -339,6 +417,7 @@ void MainGameScene::GotPowerUp(PowerUp* up)
 	else if (up->GetKind() == SPECIAL_CHANGE_SCREEN)
 	{
 		powerup = ChangeScreenSpecial::create();
+		powerup->setTag(978);
 	}
 	this->addChild(powerup,701);
 }
@@ -349,3 +428,8 @@ void MainGameScene::DeletePowerUpCallback(CCObject* up)
 	this->removeChild((PowerUp*)up,true);
 }
 
+
+void MainGameScene::DeleteDisctionnectionWarning(CCObject* warning)
+{
+	this->removeChild((CCLabelBMFont*)warning,true);
+}
