@@ -32,6 +32,7 @@ bool PointsScene::init()
 	}
 
 	animationValue = 0;
+	textsArePlaced = false;
 	// create texts
 	CCLabelBMFont *pointsText = CCLabelBMFont::create("Your Points: ","Assets/badab.fnt");
 	pointsText->setColor(ccc3(255,255,255));
@@ -48,7 +49,7 @@ bool PointsScene::init()
 	CCSequence* sequence = CCSequence::create(CCDelayTime::actionWithDuration(0.05f),
 		CCCallFuncO::create(this,callfuncO_selector(PointsScene::PointsIncreaseCallback),numbersText));
 	// initial movement
-	CCSequence* sequence2 = CCSequence::create(moveTo2,CCRepeat::actionWithAction(sequence,9999));
+	sequence2 = CCSequence::create(moveTo2,CCRepeat::actionWithAction(sequence,9999));
 	// put action on the object
 	numbersText->runAction(sequence2);
 
@@ -108,8 +109,42 @@ void PointsScene::update(float dt)
 					player2Points->setString(pointsString.getCString());
 					pointsManager->SetP2Points(rs);
 				}
+				else if (packet->data[0] == ID_DISCONNECTION_NOTIFICATION || 
+					packet->data[0] == ID_CONNECTION_LOST)
+				{
+					// connection lost
+					isConnected = false;
+					otherGameOver = true;
+				}
 			}
 		}
+	}
+
+
+	if (otherGameOver && !textsArePlaced)
+	{
+		// see who is the winner
+		CCLabelBMFont* text = CCLabelBMFont::create("","Assets/badab.fnt");
+		if (pointsManager->GetP2Points() > pointsManager->GetPoints())
+		{
+			//you loose!
+			text->setString("You loose!");
+		}
+		else if (pointsManager->GetP2Points() == pointsManager->GetPoints())
+		{
+			text->setString("Draw!");
+		}
+		else
+		{
+			text->setString("You win!");
+			// add some particle effects each one second
+			this->schedule(schedule_selector(PointsScene::CreateFireworksCallback),1.0f);
+		}
+		text->setColor(ccc3(255,0,0));
+		text->setPosition(ccp(400.0f,500.0f));
+		this->addChild(text);
+
+		textsArePlaced = true;
 	}
 }
 void PointsScene::PointsIncreaseCallback(cocos2d::CCObject* obj)
@@ -117,7 +152,7 @@ void PointsScene::PointsIncreaseCallback(cocos2d::CCObject* obj)
 	if (animationValue+5 > pointsManager->GetPoints())
 	{
 		animationValue = pointsManager->GetPoints();
-		this->stopAllActions();
+		sequence2->getTarget()->stopAction(sequence2);
 	}
 	else{animationValue+=5;}
 
@@ -127,4 +162,19 @@ void PointsScene::PointsIncreaseCallback(cocos2d::CCObject* obj)
 	// send to object
 	((CCLabelBMFont*)obj)->setString(numberString.getCString());
 
+}
+
+void PointsScene::CreateFireworksCallback(float dt)
+{
+	// put some nice particles
+	// create particle system
+	CCParticleSystem* system = CCParticleFireworks::create();
+	system->setTexture(CCTextureCache::sharedTextureCache()->addImage("Assets/fire.png"));
+	system->setAutoRemoveOnFinish(true);
+	system->setPositionX(rand() % 800);
+	system->setPositionY(rand() % 400);
+	system->setDuration(0.3f);
+	system->setScale(2.0f);
+	system->setLife(0.5f);
+	this->addChild(system);
 }

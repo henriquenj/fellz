@@ -109,7 +109,7 @@
       <Filter>PowerUps</Filter>
     </ClInclude>
     <ClInclude Include="PointsScene.h">
-      <Filter>Source Files</Filter>
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
